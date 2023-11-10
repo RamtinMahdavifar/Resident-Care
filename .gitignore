@@ -157,3 +157,6 @@ cython_debug/
 # Python virtual environment
 bin/
 pyvenv.cfg
+
+#Output folder
+Output/
