@@ -175,7 +175,7 @@ def main(stop_keyword="stop", exit_keyword="exit"):
 
         # Check for assistance keywords
         if any(keyword.lower() in input_text.lower() for keyword in assistance_keywords):
-            out = "Assistance is on the way!"
+            out = "Sending SMS, Assistance is on the way!"
             print(out)
             process_and_play_response(speech_config, out)
 
