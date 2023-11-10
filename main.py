@@ -10,6 +10,7 @@ import numpy as np
 # Initialize the mixer module for audio playback
 pygame.mixer.init()
 
+
 def beep(frequency, duration):
     """
     Play a beep sound at a specified frequency and duration.
@@ -34,8 +35,10 @@ def beep(frequency, duration):
     pygame.time.delay(duration)
     sound.stop()
 
+
 # Define the robot emoji for display purposes
-robot_emoji = "🤖"
+AI_Response = "AI Response"
+
 
 def transcribe_audio(speech_config):
     """
@@ -52,6 +55,7 @@ def transcribe_audio(speech_config):
 
     result = speech_recognizer.recognize_once_async().get()
     return result.text.strip()
+
 
 def generate_response(input_text, conversation_history):
     """
@@ -82,6 +86,7 @@ def generate_response(input_text, conversation_history):
 
     return response['choices'][0]['message']['content']
 
+
 def synthesize_and_save_speech(speech_config, response_text, file_path):
     """
     Synthesize speech from text and save it to a file.
@@ -97,6 +102,7 @@ def synthesize_and_save_speech(speech_config, response_text, file_path):
     with open(file_path, "wb") as f:
         f.write(result.audio_data)
 
+
 def play_audio(audio_file_path):
     """
     Play an audio file.
@@ -106,6 +112,7 @@ def play_audio(audio_file_path):
     """
     Audio(audio_file_path)
 
+
 def remove_temp_files(file_path):
     """
     Remove temporary files created during the process.
@@ -114,6 +121,25 @@ def remove_temp_files(file_path):
     file_path (str): The path to the file to remove.
     """
     os.remove(file_path)
+
+
+def process_and_play_response(speech_config, response_text):
+    """
+    Process the response text, synthesize speech, save to a temporary file, and play the audio.
+
+    Parameters:
+    speech_config (SpeechConfig): The configuration for speech synthesis.
+    response_text (str): The text to synthesize and play as audio.
+    """
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
+        audio_file_path = f.name
+
+    try:
+        synthesize_and_save_speech(speech_config, response_text, audio_file_path)
+        play_audio(audio_file_path)
+    finally:
+        remove_temp_files(audio_file_path)
+
 
 def main(stop_keyword="stop", exit_keyword="exit"):
     """
@@ -125,6 +151,9 @@ def main(stop_keyword="stop", exit_keyword="exit"):
     """
     print("Azure Speech Integration with ChatGpt Demo")
 
+    # Load assistance keywords from a file
+    with open('assistance_keywords.txt', 'r') as file:
+        assistance_keywords = [line.strip() for line in file.readlines()]
 
     # Define speech config
     azure_api_key = config.azure_api_key
@@ -138,11 +167,20 @@ def main(stop_keyword="stop", exit_keyword="exit"):
 
     running = True
     while running:
-        print(robot_emoji + " Listening...")
+        print(AI_Response + " Listening...")
         beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
 
         input_text = transcribe_audio(speech_config)
         print(f"You: {input_text}")
+
+        # Check for assistance keywords
+        if any(keyword.lower() in input_text.lower() for keyword in assistance_keywords):
+            out = "Assistance is on the way!"
+            print(out)
+            process_and_play_response(speech_config, out)
+
+            # Here we would need to do further logic to figure out if they actually need help and hend an sms
+            break
 
         if stop_keyword.lower() in input_text.lower():
             print("Restarting prompt...")
@@ -150,24 +188,20 @@ def main(stop_keyword="stop", exit_keyword="exit"):
             continue
 
         if exit_keyword.lower() in input_text.lower():
-            print("Goodbye for now...")
+            out = "Goodbye for now..."
+            print(out)
+            process_and_play_response(speech_config, out)
             break
 
         response_text = generate_response(input_text, conversation_history)
-        print(robot_emoji + f" Assistant: {response_text}")
+        print(f"{AI_Response} Assistant: {response_text}")
 
-        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
-            audio_file_path = f.name
-
-        try:
-            synthesize_and_save_speech(speech_config, response_text, audio_file_path)
-            play_audio(audio_file_path)
-            remove_temp_files(audio_file_path)
-        except Exception as e:
-            print(f"Error: Failed to generate or play audio - {e}")
+        # Process the response and play the response audio
+        process_and_play_response(speech_config, response_text)
 
         conversation_history.append({"role": "user", "content": input_text})
         conversation_history.append({"role": "assistant", "content": response_text})
+
 
 if __name__ == "__main__":
     main(stop_keyword="stop", exit_keyword="exit")
