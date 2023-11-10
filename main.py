@@ -69,7 +69,8 @@ def generate_response(input_text, conversation_history):
     str: The generated response text.
     """
     messages = [
-        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "system", "content": "You are a helpful assistant and need to figure out if a hospital or nursing \
+        home resident requires assistance"},
     ]
 
     messages.extend(conversation_history)
@@ -146,6 +147,7 @@ def main(stop_keyword="stop", exit_keyword="exit"):
     Main function to run the Azure Speech Integration with ChatGpt Demo.
 
     Parameters:
+    activation_keyword (str): The keyword to activate the conversation.
     stop_keyword (str): The keyword to stop and restart the conversation.
     exit_keyword (str): The keyword to exit the conversation.
     """
@@ -168,19 +170,27 @@ def main(stop_keyword="stop", exit_keyword="exit"):
     running = True
     while running:
         print(AI_Response + " Listening...")
-        beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
 
+        beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
         input_text = transcribe_audio(speech_config)
         print(f"You: {input_text}")
 
-        # Check for assistance keywords
         if any(keyword.lower() in input_text.lower() for keyword in assistance_keywords):
-            out = "Sending SMS, Assistance is on the way!"
-            print(out)
-            process_and_play_response(speech_config, out)
+            response_text = "Do you require assistance?"
+            print(f"{AI_Response} Assistant: {response_text}")
+            process_and_play_response(speech_config, response_text)
 
-            # Here we would need to do further logic to figure out if they actually need help and hend an sms
-            break
+            beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
+
+            input_text = transcribe_audio(speech_config)
+            print(f"You: {input_text}")
+
+            if "yes" in input_text.lower():
+                out = "Sending SMS, Assistance is on the way!"
+                print(out)
+                process_and_play_response(speech_config, out)
+                # Here, integrate logic to send an SMS or provide assistance
+                continue
 
         if stop_keyword.lower() in input_text.lower():
             print("Restarting prompt...")
@@ -193,6 +203,7 @@ def main(stop_keyword="stop", exit_keyword="exit"):
             process_and_play_response(speech_config, out)
             break
 
+        # handle conversation aspect here
         response_text = generate_response(input_text, conversation_history)
         print(f"{AI_Response} Assistant: {response_text}")
 
