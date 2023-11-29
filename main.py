@@ -2,14 +2,16 @@ import os
 import tempfile
 import azure.cognitiveservices.speech as speechsdk
 import openai
-import config
 import pygame
 from IPython.display import Audio
 import numpy as np
+from dotenv import load_dotenv
 
 # Initialize the mixer module for audio playback
 pygame.mixer.init()
 
+# Initialize the mixer module for audio playback
+pygame.mixer.init()
 
 def beep(frequency, duration):
     """
@@ -158,12 +160,15 @@ def main(stop_keyword="stop", exit_keyword="exit"):
         assistance_keywords = [line.strip() for line in file.readlines()]
 
     # Define speech config
-    azure_api_key = config.azure_api_key
-    azure_region = config.azure_region
+
+    load_dotenv()
+    azure_api_key = os.getenv('AZURE_API_KEY')
+    azure_region = os.getenv('AZURE_REGION')
+    openai.api_key = os.getenv('OPENAI_API_KEY')
     voice = "en-US-ChristopherNeural"
     speech_config = speechsdk.SpeechConfig(subscription=azure_api_key, region=azure_region)
     speech_config.speech_synthesis_voice_name = voice
-    openai.api_key = config.openai_api_key
+
 
     conversation_history = []
 

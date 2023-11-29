@@ -5,6 +5,7 @@ urgent
 pain
 hurt
 fall
+fell
 fallen
 accident
 trouble
@@ -25,3 +26,4 @@ I need my medication
 I feel sick
 I need a doctor
 something's wrong
+assistance
