@@ -5,13 +5,27 @@ import openai
 import pygame
 from IPython.display import Audio
 import numpy as np
+import pyaudio
 from dotenv import load_dotenv
+from assistance_detector import check_for_assistance
+
+from vosk import Model, KaldiRecognizer
+from TTS.api import TTS
+
+# tts = TTS(model_name=)
+
+
+
 
 # Initialize the mixer module for audio playback
 pygame.mixer.init()
 
 # Initialize the mixer module for audio playback
 pygame.mixer.init()
+
+model = Model(r"vosk-model-en-us-0.42-gigaspeech")
+recognizer = KaldiRecognizer(model, 16000)
+print("System Listening")
 
 def beep(frequency, duration):
     """
@@ -144,6 +158,22 @@ def process_and_play_response(speech_config, response_text):
         remove_temp_files(audio_file_path)
 
 
+def recognize_keywords():
+    mic = pyaudio.PyAudio()
+    stream = mic.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
+    stream.start_stream()
+
+    while True:
+        data = stream.read(4096)
+        if recognizer.AcceptWaveform(data):
+            text = recognizer.Result()
+            formatted_text = text[14:-3]
+
+            print(formatted_text)
+            if check_for_assistance(formatted_text):
+                break
+
+
 def main(stop_keyword="stop", exit_keyword="exit"):
     """
     Main function to run the Azure Speech Integration with ChatGpt Demo.
@@ -153,7 +183,8 @@ def main(stop_keyword="stop", exit_keyword="exit"):
     stop_keyword (str): The keyword to stop and restart the conversation.
     exit_keyword (str): The keyword to exit the conversation.
     """
-    print("Azure Speech Integration with ChatGpt Demo")
+
+    recognize_keywords()
 
     # Load assistance keywords from a file
     with open('assistance_keywords.txt', 'r') as file:
@@ -168,7 +199,6 @@ def main(stop_keyword="stop", exit_keyword="exit"):
     voice = "en-US-ChristopherNeural"
     speech_config = speechsdk.SpeechConfig(subscription=azure_api_key, region=azure_region)
     speech_config.speech_synthesis_voice_name = voice
-
 
     conversation_history = []
 
@@ -188,6 +218,9 @@ def main(stop_keyword="stop", exit_keyword="exit"):
             beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
 
             input_text = transcribe_audio(speech_config)
+            if len(input_text) == 0:
+                continue
+
             print(f"You: {input_text}")
 
             if "yes" in input_text.lower():
