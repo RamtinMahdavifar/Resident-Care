@@ -162,50 +162,46 @@ def main(stop_keyword="stop", exit_keyword="exit"):
     """
 
     while True:
-        print("System Listening")
+        print("\nSystem Listening")
 
         input_text = recognize_keywords()
-        print(f"You: {input_text}")
+        print(f"\nYou: \n{input_text}\n")
 
         conversation_history = []
 
         response_text = generate_response(input_text, conversation_history, 1)
 
         # Process the response and play the response audio
+        print(f"{AI_Response} Assistant:\n")
         process_and_play_response(response_text)
-        conversation_history.append({"role": "user", "content": input_text})
-        conversation_history.append({"role": "assistant", "content": response_text})
 
         running = True
         while running:
 
             beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
             input_text = transcribe_audio()
-            print(f"You: {input_text}")
+            print(f"\nYou: {input_text}\n")
 
             # handle conversation aspect here
             response_text = generate_response(input_text, conversation_history, 1)
-            print(f"{AI_Response} Assistant: {response_text}")
+            print(f"{AI_Response} Assistant:\n")
 
             # Process the response and play the response audio
             process_and_play_response(response_text)
 
-            conversation_history.append({"role": "user", "content": input_text})
-            conversation_history.append({"role": "assistant", "content": response_text})
-
             response_text = "Do you require assistance?"
-            print(f"{AI_Response} Assistant: {response_text}")
+            print(f"{AI_Response} Assistant:\n")
             process_and_play_response(response_text)
 
             beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
 
             input_text = transcribe_audio()
-            print(f"You: {input_text}")
+            print(f"\nYou: {input_text}\n")
 
             if "yes" in input_text.lower():
-                out = "Sending SMS, Assistance is on the way!"
-                print(out)
-                process_and_play_response(out)
+                response_text =  "Sending SMS, Assistance is on the way!"
+                print(f"{AI_Response} Assistant:\n")
+                process_and_play_response(response_text)
                 # Here, integrate logic to send an SMS or provide assistance
                 break
 

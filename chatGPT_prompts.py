@@ -37,7 +37,12 @@ def generate_response(input_text, conversation_history, prompt_number):
         temperature=1.3,
     )
 
-    return response['choices'][0]['message']['content']
+    response_text = response['choices'][0]['message']['content']
+
+    conversation_history.append({"role": "user", "content": input_text})
+    conversation_history.append({"role": "assistant", "content": response_text})
+
+    return response_text
 
 
 
