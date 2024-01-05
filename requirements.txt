@@ -79,3 +79,7 @@ validators==0.22.0
 wcwidth==0.2.9
 yarl==1.9.2
 zipp==3.17.0
+
+PyAudio~=0.2.14
+vosk~=0.3.44
+TTS~=0.22.0
