@@ -62,7 +62,7 @@ def transcribe_audio():
         data = stream.read(4096)
         if recognizer.AcceptWaveform(data):
             text = recognizer.Result()
-            formatted_text = str(text[14:-3])
+            formatted_text = text[14:-3]
 
             if len(formatted_text) == 0:
                 continue
@@ -140,7 +140,7 @@ def recognize_keywords():
         data = stream.read(4096)
         if recognizer.AcceptWaveform(data):
             text = recognizer.Result()
-            formatted_text = str(text[14:-3])
+            formatted_text = text[14:-3]
 
             if len(formatted_text) == 0:
                 continue
@@ -166,7 +166,6 @@ def main(stop_keyword="stop", exit_keyword="exit"):
 
         input_text = recognize_keywords()
         print(f"You: {input_text}")
-        print(input_text)
 
         conversation_history = []
 
