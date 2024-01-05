@@ -1,5 +1,4 @@
 import os
-
 import pygame
 import numpy as np
 import pyaudio
@@ -193,7 +192,7 @@ def main(stop_keyword="stop", exit_keyword="exit"):
             print(f"{AI_Response} Assistant:\n")
             process_and_play_response(response_text)
 
-            beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
+            beep(800, 200)
 
             input_text = transcribe_audio()
             print(f"\nYou: {input_text}\n")
