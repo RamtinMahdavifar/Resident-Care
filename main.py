@@ -5,6 +5,7 @@ import pygame
 import numpy as np
 import pyaudio
 from assistance_detector import check_for_assistance
+from dotenv import load_dotenv
 
 from vosk import Model, KaldiRecognizer
 from TTS.api import TTS
@@ -49,21 +50,31 @@ def beep(frequency, duration):
 AI_Response = "AI Response"
 
 
-def transcribe_audio(speech_config):
+def transcribe_audio():
     """
-    Transcribe audio input from the default microphone using Azure Speech Service.
-
-    Parameters:
-    speech_config (SpeechConfig): The configuration for speech service.
+    Transcribe audio input from the default microphone using Vosk local speech recognition.
 
     Returns:
     str: The transcribed text.
     """
-    audio_config = speechsdk.AudioConfig(use_default_microphone=True)
-    speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
+    mic = pyaudio.PyAudio()
+    stream = mic.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
+    stream.start_stream()
 
-    result = speech_recognizer.recognize_once_async().get()
-    return result.text.strip()
+    while True:
+        data = stream.read(4096)
+        if recognizer.AcceptWaveform(data):
+            text = recognizer.Result()
+            formatted_text = str(text[14:-3])
+
+            if len(formatted_text) == 0:
+                continue
+
+            else:
+
+                stream.close()
+                mic.terminate()
+                return formatted_text
 
 
 def generate_response(input_text, conversation_history):
@@ -108,6 +119,12 @@ def remove_temp_files(file_path):
 
 
 def play_audio_pygame(file_path):
+    """
+     Plays an audio file
+
+     Parameters:
+     file_path (str): The path of the file to play.
+     """
     pygame.mixer.init()
     pygame.mixer.music.load(file_path)
     pygame.mixer.music.play()
@@ -122,7 +139,6 @@ def process_and_play_response(response_text):
     Process the response text, synthesize speech, save to a temporary file, and play the audio.
 
     Parameters:
-    speech_config (SpeechConfig): The configuration for speech synthesis.
     response_text (str): The text to synthesize and play as audio.
     """
 
@@ -143,6 +159,13 @@ def process_and_play_response(response_text):
 
 
 def recognize_keywords():
+    """
+     Continuously listens until a keyword or set of keywords are spoken in a sentence
+
+     Returns:
+     str: The sentence where a keyword was detected
+
+     """
     mic = pyaudio.PyAudio()
     stream = mic.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
     stream.start_stream()
@@ -158,6 +181,7 @@ def recognize_keywords():
 
             if check_for_assistance(formatted_text):
                 stream.close()
+                mic.terminate()
                 return formatted_text
 
 
@@ -171,75 +195,65 @@ def main(stop_keyword="stop", exit_keyword="exit"):
     exit_keyword (str): The keyword to exit the conversation.
     """
 
+    load_dotenv()
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+
     text = recognize_keywords()
     print(text)
-    process_and_play_response(text)
 
-    #
-    # # Load assistance keywords from a file
-    # with open('assistance_keywords.txt', 'r') as file:
-    #     assistance_keywords = [line.strip() for line in file.readlines()]
-    #
-    # # Define speech config
-    #
-    # load_dotenv()
-    # azure_api_key = os.getenv('AZURE_API_KEY')
-    # azure_region = os.getenv('AZURE_REGION')
-    # openai.api_key = os.getenv('OPENAI_API_KEY')
-    # voice = "en-US-ChristopherNeural"
-    # speech_config = speechsdk.SpeechConfig(subscription=azure_api_key, region=azure_region)
-    # speech_config.speech_synthesis_voice_name = voice
-    #
-    # conversation_history = []
-    #
-    # running = True
-    # while running:
-    #     print(AI_Response + " Listening...")
-    #
-    #     beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
-    #     input_text = transcribe_audio(speech_config)
-    #     print(f"You: {input_text}")
-    #
-    #     if any(keyword.lower() in input_text.lower() for keyword in assistance_keywords):
-    #         response_text = "Do you require assistance?"
-    #         print(f"{AI_Response} Assistant: {response_text}")
-    #         process_and_play_response(speech_config, response_text)
-    #
-    #         beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
-    #
-    #         input_text = transcribe_audio(speech_config)
-    #         if len(input_text) == 0:
-    #             continue
-    #
-    #         print(f"You: {input_text}")
-    #
-    #         if "yes" in input_text.lower():
-    #             out = "Sending SMS, Assistance is on the way!"
-    #             print(out)
-    #             process_and_play_response(speech_config, out)
-    #             # Here, integrate logic to send an SMS or provide assistance
-    #             continue
-    #
-    #     if stop_keyword.lower() in input_text.lower():
-    #         print("Restarting prompt...")
-    #         conversation_history = []
-    #         continue
-    #
-    #     if exit_keyword.lower() in input_text.lower():
-    #         out = "Goodbye for now..."
-    #         print(out)
-    #         process_and_play_response(speech_config, out)
-    #         break
-    #
-    #     # handle conversation aspect here
-    #     response_text = generate_response(input_text, conversation_history)
-    #     print(f"{AI_Response} Assistant: {response_text}")
-    #
-    #     # Process the response and play the response audio
-    #     process_and_play_response(speech_config, response_text)
-    #
-    #     conversation_history.append({"role": "user", "content": input_text})
-    #     conversation_history.append({"role": "assistant", "content": response_text})
+    conversation_history = []
+    # response_text = generate_response(text, conversation_history)
+
+
+    running = True
+    while running:
+        # print(AI_Response + " Listening...")
+        #
+        # beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
+        # input_text = transcribe_audio()
+        # print(f"You: {input_text}")
+        #
+        #
+        #
+        # beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
+        #
+        # input_text = transcribe_audio()
+        # if len(input_text) == 0:
+        #     continue
+        #
+        # print(f"You: {input_text}")
+        #
+        # if "yes" in input_text.lower():
+        #     out = "Sending SMS, Assistance is on the way!"
+        #     print(out)
+        #     process_and_play_response(out)
+        #     # Here, integrate logic to send an SMS or provide assistance
+        #     continue
+        #
+        # if stop_keyword.lower() in input_text.lower():
+        #     print("Restarting prompt...")
+        #     conversation_history = []
+        #     continue
+        #
+        # if exit_keyword.lower() in input_text.lower():
+        #     out = "Goodbye for now..."
+        #     print(out)
+        #     process_and_play_response(speech_config, out)
+        #     break
+
+        beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
+        input_text = transcribe_audio()
+        print(f"You: {input_text}")
+
+        # handle conversation aspect here
+        response_text = generate_response(input_text, conversation_history)
+        print(f"{AI_Response} Assistant: {response_text}")
+
+        # Process the response and play the response audio
+        process_and_play_response(response_text)
+
+        conversation_history.append({"role": "user", "content": input_text})
+        conversation_history.append({"role": "assistant", "content": response_text})
 
 
 if __name__ == "__main__":
