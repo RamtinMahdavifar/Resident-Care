@@ -3,7 +3,7 @@ import pygame
 import numpy as np
 import pyaudio
 from assistance_detector import check_for_assistance
-from chatGPT_prompts import generate_response
+from chatGPT_prompts import generate_response, summarize_conversation_history
 from sms_twilio import send_sms
 
 from vosk import Model, KaldiRecognizer
@@ -203,13 +203,17 @@ def main(stop_keyword="stop", exit_keyword="exit"):
                 print(f"{AI_Response} Assistant:\n")
                 process_and_play_response(response_text)
 
-                # Here, integrate logic to send an SMS or provide assistance
-                send_sms(response_text)
+                # Summarising conversation and sending SMS to resident
+                summarized_conversation = summarize_conversation_history(conversation_history)
+                print("Summarized Conversation sent to caregiver:\n" + summarized_conversation + "\n")
+                send_sms(summarized_conversation)
+                conversation_history.clear()
                 break
 
             else:
                 response_text = generate_response(input_text, conversation_history, 1)
                 process_and_play_response(response_text)
+                conversation_history.clear()
                 break
 
 
