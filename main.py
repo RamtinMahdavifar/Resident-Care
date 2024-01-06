@@ -4,6 +4,7 @@ import numpy as np
 import pyaudio
 from assistance_detector import check_for_assistance
 from chatGPT_prompts import generate_response
+from sms_twilio import send_sms
 
 from vosk import Model, KaldiRecognizer
 from TTS.api import TTS
@@ -201,7 +202,9 @@ def main(stop_keyword="stop", exit_keyword="exit"):
                 response_text = "Sending SMS, Assistance is on the way!"
                 print(f"{AI_Response} Assistant:\n")
                 process_and_play_response(response_text)
+
                 # Here, integrate logic to send an SMS or provide assistance
+                send_sms(response_text)
                 break
 
             else:
