@@ -198,10 +198,15 @@ def main(stop_keyword="stop", exit_keyword="exit"):
             print(f"\nYou: {input_text}\n")
 
             if "yes" in input_text.lower():
-                response_text =  "Sending SMS, Assistance is on the way!"
+                response_text = "Sending SMS, Assistance is on the way!"
                 print(f"{AI_Response} Assistant:\n")
                 process_and_play_response(response_text)
                 # Here, integrate logic to send an SMS or provide assistance
+                break
+
+            else:
+                response_text = generate_response(input_text, conversation_history, 1)
+                process_and_play_response(response_text)
                 break
 
 
