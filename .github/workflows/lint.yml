@@ -1,34 +1,31 @@
-on: [push, pull_request]
+name: Lint
+
+on:
+  push:
+    branches:
+      - main  # Update this to your main branch name
+  pull_request:
+    branches:
+      - main  # Update this to your main branch name
 
 jobs:
-  python-lint:
+  lint:
     runs-on: ubuntu-latest
-    name: CI workflow
+
     steps:
-    - name: checkout source repo
-      uses: actions/checkout@main
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    - name: linting
-      uses: programmingwithalex/pylinter@main
+    - name: Set up Python
+      uses: actions/setup-python@v2
       with:
-        python-root: '.'
-        flake8-flags: ''
-        mypy-flags: ''
-        fail-on-isort: false
-        # skip-flake8: false
-        # skip-mypy: false
-        # skip-isort: false
-        # mypy-ignore-dirs-files: ''
-        # requirements-file: ''
+        python-version: 3.9  # Choose the Python version you want to use
 
-    - name: commit isort changes
+    - name: Install dependencies
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add -A && git diff-index --cached --quiet HEAD || git commit -m 'isort'
+        python -m pip install --upgrade pip
+        pip install flake8
 
-    - name: push isort changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
+    - name: Run Flake8
+      run: |
+        flake8 .  # This will check all .py files in the current directory and its subdirectories
