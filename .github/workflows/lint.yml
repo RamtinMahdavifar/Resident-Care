@@ -3,10 +3,10 @@ name: Lint
 on:
   push:
     branches:
-      - main  # Update this to your main branch name
+      - main  # Run linting when making changes to main
   pull_request:
     branches:
-      - main  # Update this to your main branch name
+      - main  # Run linting when making pull request to main
 
 jobs:
   lint:
@@ -24,8 +24,16 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8
+        pip install flake8 mypy isort
 
     - name: Run Flake8
       run: |
         flake8 .  # This will check all .py files in the current directory and its subdirectories
+
+    - name: Run MyPy
+      run: |
+        mypy .  # This will check all .py files in the current directory and its subdirectories
+
+    - name: Run isort
+      run: |
+        isort --check-only --diff .  # This will check and show changes made by isort
