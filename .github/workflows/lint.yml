@@ -36,4 +36,4 @@ jobs:
 
     - name: Run isort and auto-fix imports
       run: |
-        isort . 
+        isort --check-only --diff .  # This will check and show changes made by isort
