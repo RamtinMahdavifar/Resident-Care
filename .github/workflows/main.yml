@@ -3,13 +3,13 @@ name: Main Workflow
 on:
   push:
     branches:
-      - main  # Run linting when making changes to main
+      - main
   pull_request:
     branches:
-      - main  # Run linting when making pull request to main
-      -
+      - main
+
 jobs:
-  lint:
+  main_workflow:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 mypy isort os python-dotenv pytest
+          pip install flake8 mypy isort python-dotenv pytest
 
       - name: Set up environment variables
         run: |
