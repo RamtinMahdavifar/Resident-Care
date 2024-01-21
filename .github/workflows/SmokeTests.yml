@@ -1,9 +1,10 @@
 name: Smoke Tests
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Main Workflow"]
+    types:
+      - completed
 
 jobs:
   smoke_tests:

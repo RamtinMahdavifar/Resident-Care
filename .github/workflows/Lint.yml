@@ -1,12 +1,10 @@
 name: Lint
 
 on:
-  push:
-    branches:
-      - main  # Run linting when making changes to main
-  pull_request:
-    branches:
-      - main  # Run linting when making pull request to main
+  workflow_run:
+    workflows: ["Main Workflow"]
+    types:
+      - completed
 
 jobs:
   lint:
