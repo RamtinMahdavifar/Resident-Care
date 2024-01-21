@@ -1,0 +1,23 @@
+name: Main Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run_all_workflows:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run lint workflow
+        uses: actions/workflow-run-action@v2
+        with:
+          workflow: Lint.yml
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run smoke tests workflow
+        uses: actions/workflow-run-action@v2
+        with:
+          workflow: SmokeTests.yml
+          access-token: ${{ secrets.GITHUB_TOKEN }}
