@@ -40,4 +40,4 @@ jobs:
 
     - name: Commit and push if changes were made by isort
       run: |
-        git diff --exit-code || (git config --local user.email "action@github.com" && git config --local user.name "GitHub Action" && git checkout ${{ github.head_ref }} && git add -A && git commit -m "Auto-fix imports using isort" && git push)
+        git diff --exit-code || (git config --local user.email "action@github.com" && git config --local user.name "GitHub Action" && git checkout ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'main' || github.event_name == 'pull_request' && github.head_ref || '' }} && git add -A && git commit -m "Auto-fix imports using isort" && git push)
