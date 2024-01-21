@@ -33,8 +33,13 @@ def beep(frequency, duration):
     max_sample = 2 ** (16 - 1) - 1
     for s in range(n_samples):
         t = float(s) / sample_rate  # time in seconds
-        buf[s][0] = int(round(max_sample * np.sin(2 * np.pi * frequency * t)))  # left channel
-        buf[s][1] = int(round(max_sample * np.sin(2 * np.pi * frequency * t)))  # right channel
+
+        # left channel
+        buf[s][0] = int(round(max_sample * np.sin(2 * np.pi * frequency * t)))
+
+        # right channel
+        buf[s][1] = int(round(max_sample * np.sin(2 * np.pi * frequency * t)))
+
     sound = pygame.sndarray.make_sound(buf)
 
     # Play the sound
@@ -49,13 +54,16 @@ AI_Response = "AI Response"
 
 def transcribe_audio():
     """
-    Transcribe audio input from the default microphone using Vosk local speech recognition.
+    Transcribe audio input from the default microphone using Vosk local speech
+    recognition.
 
     Returns:
     str: The transcribed text.
     """
     mic = pyaudio.PyAudio()
-    stream = mic.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
+    stream = mic.open(format=pyaudio.paInt16, channels=1, rate=16000,
+                      input=True, frames_per_buffer=8192)
+
     stream.start_stream()
 
     while True:
@@ -102,7 +110,8 @@ def play_audio_pygame(file_path):
 
 def process_and_play_response(response_text):
     """
-    Process the response text, synthesize speech, save to a temporary file, and play the audio.
+    Process the response text, synthesize speech, save to a temporary file,
+    and play the audio.
 
     Parameters:
     response_text (str): The text to synthesize and play as audio.
@@ -126,14 +135,17 @@ def process_and_play_response(response_text):
 
 def recognize_keywords():
     """
-     Continuously listens until a keyword or set of keywords are spoken in a sentence
+     Continuously listens until a keyword or set of keywords are spoken in a
+     sentence
 
      Returns:
      str: The sentence where a keyword was detected
 
      """
     mic = pyaudio.PyAudio()
-    stream = mic.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
+    stream = mic.open(format=pyaudio.paInt16, channels=1, rate=16000,
+                      input=True, frames_per_buffer=8192)
+
     stream.start_stream()
 
     while True:
@@ -183,7 +195,9 @@ def main(stop_keyword="stop", exit_keyword="exit"):
             print(f"\nYou: {input_text}\n")
 
             # handle conversation aspect here
-            response_text = generate_response(input_text, conversation_history, 1)
+            response_text = generate_response(input_text,
+                                              conversation_history, 1)
+
             print(f"{AI_Response} Assistant:\n")
 
             # Process the response and play the response audio
@@ -204,14 +218,20 @@ def main(stop_keyword="stop", exit_keyword="exit"):
                 process_and_play_response(response_text)
 
                 # Summarising conversation and sending SMS to resident
-                summarized_conversation = summarize_conversation_history(conversation_history)
-                print("Summarized Conversation sent to caregiver:\n" + summarized_conversation + "\n")
+                summarized_conversation = summarize_conversation_history(
+                    conversation_history)
+
+                print("Summarized Conversation sent to caregiver:\n" +
+                      summarized_conversation + "\n")
+
                 send_sms(summarized_conversation)
                 conversation_history.clear()
                 break
 
             else:
-                response_text = generate_response(input_text, conversation_history, 1)
+                response_text = generate_response(input_text,
+                                                  conversation_history, 1)
+
                 process_and_play_response(response_text)
                 conversation_history.clear()
                 break

@@ -18,8 +18,9 @@ def generate_response(input_text, conversation_history, prompt_number):
     str: The generated response text.
     """
     messages = [
-        {"role": "system", "content": "You are a helpful assistant and need to figure out if a hospital or nursing \
-            home resident requires assistance. Always ask if they need assistance at the end"},
+        {"role": "system", "content": "You are a helpful assistant and need \
+        to figure out if a hospital or nursing home resident requires \
+        assistance. Always ask if they need assistance at the end"},
     ]
 
     messages.extend(conversation_history)
@@ -37,7 +38,11 @@ def generate_response(input_text, conversation_history, prompt_number):
     response_text = response['choices'][0]['message']['content']
 
     conversation_history.append({"role": "user", "content": input_text})
-    conversation_history.append({"role": "assistant", "content": response_text})
+
+    conversation_history.append({
+        "role": "assistant",
+        "content": response_text
+    })
 
     return response_text
 
@@ -54,13 +59,17 @@ def summarize_conversation_history(conversation_history):
     str: The generated response text.
     """
     messages = [
-        {"role": "system", "content": "You are a helpful assistant for a hospital or nursing \
-            home resident. You directly interact with the resident and you must summarize the conversation history \
-             that you had with the resident"},
+        {"role": "system", "content": "You are a helpful assistant for a \
+                                      hospital or nursing  home resident. \
+                                      You directly interact with the \
+                                      resident and you must summarize the \
+                                      conversation history  that you had \
+                                      with the resident"},
     ]
 
-    input_text = "Summarize the conversation history you had with the resident in clear concise and nicely formatted \
-                  manner. This information will be sent to a nurse or caregiver."
+    input_text = "Summarize the conversation history you had with the  \
+                 resident in clear concise and nicely formatted  manner. \
+                 This information will be sent to a nurse or caregiver."
 
     messages.extend(conversation_history)
     messages.append({"role": "user", "content": input_text})
@@ -77,6 +86,7 @@ def summarize_conversation_history(conversation_history):
     response_text = response['choices'][0]['message']['content']
 
     conversation_history.append({"role": "user", "content": input_text})
-    conversation_history.append({"role": "assistant", "content": response_text})
+    conversation_history.append(
+        {"role": "assistant", "content": response_text})
 
     return response_text
