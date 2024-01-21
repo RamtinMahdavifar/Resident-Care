@@ -38,6 +38,15 @@ jobs:
       run: |
         isort --atomic .  # Automatically fix imports using isort
 
-    - name: Commit and push if changes were made by isort
+    - name: commit isort changes
       run: |
-        git diff --exit-code || (git config --local user.email "action@github.com" && git config --local user.name "GitHub Action" && git checkout ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'main' || github.event_name == 'pull_request' && github.head_ref || '' }} && git add -A && git commit -m "Auto-fix imports using isort" && git push)
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add -A && git diff-index --cached --quiet HEAD || git commit -m 'isort'
+
+    - name: push isort changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
+
