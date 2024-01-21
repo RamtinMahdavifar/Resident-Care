@@ -4,7 +4,7 @@ import numpy as np
 import pyaudio
 import pygame
 from TTS.api import TTS
-from vosk import Model, KaldiRecognizer
+from vosk import KaldiRecognizer, Model
 
 from assistance_detector import check_for_assistance
 from chatGPT_prompts import generate_response, summarize_conversation_history
