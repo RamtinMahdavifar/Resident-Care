@@ -1,5 +1,5 @@
-import pytest
 import openai
+import pytest
 
 from chatGPT_prompts import generate_response
 
