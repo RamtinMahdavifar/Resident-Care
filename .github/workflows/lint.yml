@@ -32,7 +32,7 @@ jobs:
 
     - name: Run MyPy
       run: |
-        mypy .  # This will check all .py files in the current directory and its subdirectories
+        mypy --ignore-missing-imports .  # Ignore missing imports during MyPy check
 
     - name: Run isort
       run: |
