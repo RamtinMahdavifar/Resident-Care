@@ -157,3 +157,6 @@ cython_debug/
 # Python virtual environment
 bin/
 pyvenv.cfg
+
+
+vosk-model-en-us-0.42-gigaspeech/
