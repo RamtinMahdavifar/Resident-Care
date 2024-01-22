@@ -29,6 +29,7 @@ jobs:
       - name: Set up environment variables
         run: |
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+          echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
 
       - name: Run Flake8
         run: |
@@ -44,5 +45,9 @@ jobs:
 
       - name: Run smoke tests
         env:
+          PYTHONPATH: ${{ github.workspace }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: pytest tests/smoke_tests/test_smoke.py
+
+        run: |
+          cd tests/smoke_tests
+          pytest test_smoke.py
