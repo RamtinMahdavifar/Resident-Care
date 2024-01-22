@@ -10,6 +10,7 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
+
 def generate_response(input_text, conversation_history):
     """
     Generate a response to the input text using OpenAI's GPT model.
