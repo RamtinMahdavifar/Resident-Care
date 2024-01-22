@@ -7,7 +7,7 @@ from TTS.api import TTS
 from vosk import KaldiRecognizer, Model
 
 from assistance_detector import check_for_assistance
-from chatGPT_prompts import generate_response, summarize_conversation_history
+from chatgpt_prompts import generate_response, summarize_conversation_history
 from sms_twilio import send_sms
 
 tts = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC_ph")

@@ -1,7 +1,7 @@
 import openai
 import pytest
 
-from chatGPT_prompts import generate_response
+from chatgpt_prompts import generate_response
 
 
 @pytest.mark.smoke
