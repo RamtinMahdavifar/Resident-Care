@@ -39,7 +39,7 @@ jobs:
         run: |
           mypy --ignore-missing-imports .  # Ignore missing imports during MyPy check
 
-      - name: Run isort and auto-fix imports
+      - name: Run isort
         run: |
           isort --check-only --diff .  # This will check and show changes made by isort
 
