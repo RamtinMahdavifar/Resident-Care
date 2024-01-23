@@ -26,8 +26,8 @@ Create a `.env` file in the project root with the following content:
 
 ```plaintext
 # Open API
-OPENAI_API_KEY='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'
+OPENAI_API_KEY='Your OPen API Key'
 
 # Twilio
-ACCOUNT_SID='AC5c1208d0ab1d092a1bfc3e8c151fd265'
-AUTH_TOKEN='ef08d29b88b0d9af6caf15333ebdc13d'
+ACCOUNT_SID='Your ACCOUNT_SID'
+AUTH_TOKEN='Your AUTH_TOKEN'
