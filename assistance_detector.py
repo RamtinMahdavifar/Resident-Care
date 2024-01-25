@@ -3,12 +3,13 @@ import re
 
 def check_for_assistance(text):
     pattern = re.compile(
-        r'\b(?:help|assistance|emergency|urgent|pain|hurt|fall(?:en)?|accident'
-        r'|trouble|not feeling '
-        r'well|sick|medicine|doctor|nurse|can\'t get up|need someone|'
-        r'come quickly|help me please|I need help|it\'s an '
-        r'emergency|I\'ve fallen and I can\'t get up|I\'m in pain|I need my '
-        r'medication|I feel sick|I need a '
-        r'doctor|something\'s wrong|carebot)\b',
+        r'\b(?:Help|Emergency|Fall('
+        r'?:en|ing)?|Hurt|Medication|Doctor|Nurse|Sick|Assistance|Aid'
+        r'|Distress|Panic|Suffering|Support|Alarming|Disturbance|Critical'
+        r'|Rescue|Urgent|Quick|Ache|Trouble|Need|Now|Bad|Unwell|Worsen('
+        r'?:ing)?|Stop|Difficult|Terrible|Worse|Abnormal|Unbearable|Concern'
+        r'|Serious|Intense|Dire|Dangerous|Frantic|Dreadful|Panic('
+        r'?:king)?|Fright(?:en(?:ing|ed)?)?|Terrify(?:ing)?|Urgency|Agon('
+        r'?:y|izing)|Mis(?:ery|erable)|Worr(?:y|ied)|Pain(?:ful)?)(?:s|es)?\b',
         re.IGNORECASE)
     return bool(pattern.search(text))
