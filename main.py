@@ -8,7 +8,7 @@ from vosk import KaldiRecognizer, Model
 
 from assistance_detector import check_for_assistance
 from chatgpt_prompts import generate_response, summarize_conversation_history
-from sms_twilio import send_sms
+from sms_twilio import send_mms
 
 tts = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC_ph")
 
@@ -225,7 +225,7 @@ def main(stop_keyword="stop", exit_keyword="exit"):
                 print("Summarized Conversation sent to caregiver:\n" +
                       summarized_conversation + "\n")
 
-                send_sms(summarized_conversation)
+                send_mms(summarized_conversation)
                 conversation_history.clear()
                 break
 
