@@ -2,6 +2,16 @@ import re
 
 
 def check_for_assistance(text):
+    """
+    Check if the given text contains keywords indicative of a request for
+    assistance or emergency.
+
+    Parameters:
+    text (str): The input text to analyze for assistance-related keywords.
+
+    Returns:
+    bool: True if assistance-related keywords are found, False otherwise.
+    """
     pattern = re.compile(
         r'\b(?:Help|Emergency|Fall('
         r'?:en|ing)?|Hurt|Medication|Doctor|Nurse|Sick|Assistance|Aid'

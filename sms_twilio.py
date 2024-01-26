@@ -9,7 +9,16 @@ auth_token = os.getenv('AUTH_TOKEN')
 client = Client(account_sid, auth_token)
 
 
-def send_sms(body):
+def send_mms(body):
+    """
+    Send an MMS message using Twilio.
+
+    Parameters:
+    body (str): The content of the MMS message.
+
+    Returns:
+    None
+    """
     client.messages \
         .create(
             body=body,
