@@ -58,7 +58,9 @@ def generate_response(input_text,
                                       "CareBot. Your duty is to assist\
         hospital or nursing home Residents. You responsibilities include \
         conversing with the Resident, determining if they require urgent "
-                                      "assistance, and summarizing "
+                                      "assistance, determining if the Resident"
+                                      "has the intend to end the conversation"
+                                      "while conversing and summarizing "
                                       "conversation history to be sent to a"
                                       "Caregiver"},
     ]
@@ -121,7 +123,47 @@ def is_urgent_assistance_needed(input_text):
              "anything else." \
              "Input Text: " + input_text
 
-    response = generate_response(prompt, [])
+    response = generate_response(prompt, [], False)
+    if "true" in response.lower():
+        return True
+    else:
+        return False
+
+
+def is_intent_to_end_conversation(input_text):
+    """
+    Determines whether the input text indicates an intent by the Resident
+    to end the conversation, based on the response from a generated response
+    function.
+
+    This function constructs a prompt that asks whether the provided input text
+    signifies an intent by the Resident to conclude the conversation. Examples
+    of such intent include phrases like "goodbye", "I don't want to talk to
+    you anymore", and "no thanks bye". The function then interprets a
+    response containing the string "true", in a case-insensitive manner, as an
+    indication that the intent is indeed to end the conversation.
+
+    Parameters:
+    - input_text (str): Text that is being evaluated for signs of intent to
+        end the conversation.
+
+    Returns:
+    - bool: True if the generated response suggests an intent to end the
+        conversation,
+        False otherwise.
+    """
+    prompt = "Reply back true if the Input Text below " \
+             "indicate if the Resident has the indent to end the " \
+             "conversation. Otherwise reply back false" \
+             "" \
+             "An examples of the intend to end conversation " \
+             "are goodbye, I don't want to talk to you anymore, " \
+             "no thanks bye." \
+             "Only Reply true or false, do not respond back " \
+             "with " \
+             "anything else. " \
+             "Input Text: " + input_text
+    response = generate_response(prompt, [], False)
     if "true" in response.lower():
         return True
     else:
@@ -144,4 +186,4 @@ def summarize_conversation_history(conversation_history):
                  Resident in clear concise and nicely formatted  manner. \
                  This information will be sent to a nurse or caregiver"
 
-    return generate_response(prompt, conversation_history)
+    return generate_response(prompt, conversation_history, False)
