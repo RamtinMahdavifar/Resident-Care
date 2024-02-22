@@ -6,7 +6,7 @@ import pygame
 from TTS.api import TTS
 from vosk import KaldiRecognizer, Model
 
-from assistance_detector import check_for_assistance
+from keyword_detector import check_for_keywords
 from chatgpt_prompts import generate_response, summarize_conversation_history
 from sms_twilio import send_mms
 
@@ -158,7 +158,7 @@ def recognize_keywords():
             if len(formatted_text) == 0:
                 continue
 
-            if check_for_assistance(formatted_text):
+            if check_for_keywords(formatted_text):
                 stream.close()
                 mic.terminate()
                 return formatted_text
