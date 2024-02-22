@@ -20,7 +20,7 @@ def main():
 
         conversation_history = []
 
-        response_text = generate_response(input_text, conversation_history, 1)
+        response_text = generate_response(input_text, conversation_history)
 
         # Process the response and play the response audio
         print(f"{ai_response} Assistant:\n")
@@ -35,7 +35,7 @@ def main():
 
             # handle conversation aspect here
             response_text = generate_response(input_text,
-                                              conversation_history, 1)
+                                              conversation_history)
 
             print(f"{ai_response} Assistant:\n")
 
@@ -69,7 +69,7 @@ def main():
 
             else:
                 response_text = generate_response(input_text,
-                                                  conversation_history, 1)
+                                                  conversation_history)
 
                 process_and_play_response(response_text)
                 conversation_history.clear()
