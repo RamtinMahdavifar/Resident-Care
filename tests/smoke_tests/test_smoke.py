@@ -10,4 +10,4 @@ def test_openai_version():
 
 
 def test_gpt_response():
-    assert len(generate_response("Hi ChatGPT", [], 1)) != 0
+    assert len(generate_response("Hi ChatGPT", [])) != 0
