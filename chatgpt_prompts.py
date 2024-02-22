@@ -145,4 +145,3 @@ def summarize_conversation_history(conversation_history):
                  This information will be sent to a nurse or caregiver"
 
     return generate_response(prompt, conversation_history)
-
