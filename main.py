@@ -27,19 +27,29 @@ def beep(frequency, duration):
     frequency (int): The frequency of the beep in Hertz.
     duration (int): The duration of the beep in milliseconds.
     """
+    # Constants
+    SAMPLE_RATE = 44100  # Sample rate in Hertz
+
+    # Conversion factor from milliseconds to seconds
+    MILLISECONDS_TO_SECONDS = 1000.0
+
+    CHANNELS = 2  # Number of audio channels
+    BITS_PER_SAMPLE = 16  # Number of bits per audio sample
+    MAX_SAMPLE_VALUE = 2 ** (
+                BITS_PER_SAMPLE - 1) - 1  # Maximum value for a sample
+
     # Generate a sound buffer with the given frequency
-    sample_rate = 44100
-    n_samples = int(round(duration * sample_rate / 1000.0))
-    buf = np.zeros((n_samples, 2), dtype=np.int16)
-    max_sample = 2 ** (16 - 1) - 1
+    n_samples = int(round(duration * SAMPLE_RATE / MILLISECONDS_TO_SECONDS))
+    buf = np.zeros((n_samples, CHANNELS), dtype=np.int16)
+
     for s in range(n_samples):
-        t = float(s) / sample_rate  # time in seconds
+        t = float(s) / SAMPLE_RATE  # time in seconds
 
-        # left channel
-        buf[s][0] = int(round(max_sample * np.sin(2 * np.pi * frequency * t)))
-
-        # right channel
-        buf[s][1] = int(round(max_sample * np.sin(2 * np.pi * frequency * t)))
+        # Generate the sound for both left and right channels
+        sample_value = int(
+            round(MAX_SAMPLE_VALUE * np.sin(2 * np.pi * frequency * t)))
+        buf[s][0] = sample_value  # left channel
+        buf[s][1] = sample_value  # right channel
 
     sound = pygame.sndarray.make_sound(buf)
 

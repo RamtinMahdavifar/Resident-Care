@@ -19,6 +19,7 @@ def check_for_keywords(text):
         r'?:ing)?|Stop|Difficult|Terrible|Worse|Abnormal|Unbearable|Concern'
         r'|Serious|Intense|Dire|Dangerous|Frantic|Dreadful|Panic('
         r'?:king)?|Fright(?:en(?:ing|ed)?)?|Terrify(?:ing)?|Urgency|Agon('
-        r'?:y|izing)|Mis(?:ery|erable)|Worr(?:y|ied)|Pain(?:ful)?)(?:s|es)?\b',
+        r'?:y|izing)|Mis(?:ery|erable)|Worr(?:y|ied)|Pain(?:ful)?|Carebot)(?:s|es)?\b',
         re.IGNORECASE)
     return bool(pattern.search(text))
+
