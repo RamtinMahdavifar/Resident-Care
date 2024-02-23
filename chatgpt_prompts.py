@@ -57,14 +57,15 @@ def generate_response(input_text,
     """
     messages = [
         {"role": "system", "content": "You are a helpful assistant named "
-                                      "CareBot. Your duty is to assist\
+                                      "Care-Bot. Your duty is to assist\
         hospital or nursing home Residents. You responsibilities include \
         conversing with the Resident, determining if they require urgent "
                                       "assistance, determining if the Resident"
                                       "has the intend to end the conversation"
                                       "while conversing and summarizing "
                                       "conversation history to be sent to a"
-                                      "Caregiver"},
+                                      "Caregiver. Do not return any emojis in"
+                                      "the response. Only return back text"},
     ]
 
     messages.extend(conversation_history)
