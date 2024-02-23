@@ -11,11 +11,11 @@ def append_conversation_history(input_text, response_text,
                                 conversation_history):
     """
     Append the user's input and the assistant's response to the conversation
-    history.
+    history if they are not empty.
 
     This function modifies the conversation history in place by adding
     two new entries: one for the user's input and one for the
-    assistant's response.
+    assistant's response. The entries are only added if they are not empty.
 
     Parameters:
         - input_text (str): The user's input text.
@@ -27,12 +27,14 @@ def append_conversation_history(input_text, response_text,
     Returns:
         - None
     """
-    conversation_history.append({"role": "user", "content": input_text})
+    if len(input_text) != 0:
+        conversation_history.append({"role": "user", "content": input_text})
 
-    conversation_history.append({
-        "role": "assistant",
-        "content": response_text
-    })
+    if len(response_text) != 0:
+        conversation_history.append({
+            "role": "assistant",
+            "content": response_text
+        })
 
 
 def generate_response(input_text,
@@ -124,6 +126,51 @@ def is_urgent_assistance_needed(input_text):
              "Input Text: " + input_text
 
     response = generate_response(prompt, [], False)
+    if "true" in response.lower():
+        return True
+    else:
+        return False
+
+
+def is_assistance_needed_from_conversation_history(input_text,
+                                                   conversation_history):
+    """
+       Determines whether assistance is needed based on the last 1-3 messages
+       in the conversation history between a Resident and the System.
+
+       This function reviews the last 1-3 messages in the conversation history
+       to identify if they indicate a situation where the Resident requires
+       assistance.
+       It appends the latest input text to the conversation history and uses
+       a prompt to analyze the conversation context. Based on the analysis, it
+       generates a response indicating whether assistance is needed (true) or
+       not (false).
+
+       Parameters:
+       - input_text (str): The latest message from the Resident, to be
+        appended to the conversation history for context analysis.
+       - conversation_history (list): A list of dictionaries, each
+         representing a message in the conversation history. Each dictionary
+         contains two keys: "role" (indicating
+         whether the message is from the "user" or "assistant") and
+         "content" (the message text).
+
+       Returns:
+       - bool: True if the analysis of the conversation history indicates that
+        the Resident requires assistance, False otherwise.
+       """
+    prompt = "Reply back true if the last 1-3 messages in the " \
+             "conversation_history indicates a situation " \
+             "where the Resident requires assistance." \
+             "Otherwise reply " \
+             "back false. Only Reply true or false, do not respond back " \
+             "with " \
+             "anything else."
+
+    temp_convo_history = conversation_history
+    append_conversation_history(input_text, "",  temp_convo_history)
+    response = generate_response(prompt, temp_convo_history, False)
+
     if "true" in response.lower():
         return True
     else:
