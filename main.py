@@ -9,8 +9,9 @@ from sms_twilio import send_mms
 from voice_recognition import transcribe_audio, listen_for_keywords
 from utilities import beep
 from voice_synthesis import process_and_play_response
+from typing import List
 
-conversation_history = []
+conversation_history: List[str] = []
 
 
 def alert_assistance_request_sent():
