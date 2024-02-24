@@ -43,10 +43,9 @@ def render_sidebar(logo_url):
     st.sidebar.markdown(
         f"""
         <div style="display: flex; justify-content: center;">
-            <img src="{logo_url}" style="width:250px;height:250px;">
-        </div>
-        <hr style='border: none; border-top: 1px solid #ccc; margin: 20px 0px;'>
-        """,
+            <img src="{logo_url}" style="width:250px;height:250px;"> </div> 
+            <hr style='border: none; border-top: 1px solid #ccc; margin: 
+            20px 0px;'> """,
         unsafe_allow_html=True,
     )
 
@@ -68,7 +67,8 @@ def display_message(message_text, is_ui, is_user=True):
 
     st.markdown(
         f"<div style='padding: 10px;'>"
-        f"<div style='background-color: {color}; padding: 10px; border-radius: 5px; color: {text_color}; text-align: left;'>"
+        f"<div style='background-color: {color}; padding: 10px; "
+        f"border-radius: 5px; color: {text_color}; text-align: left;'>"
         f"{indented_text}</div>"
         f"</div>",
         unsafe_allow_html=True,
@@ -80,7 +80,8 @@ def main(is_ui=False):
     Main function to run program.
     """
     if is_ui:
-        logo = "https://img.freepik.com/premium-vector/cute-nurse-holding-health-symbol_123847-1477.jpg"
+        logo = "https://img.freepik.com/premium-vector/cute-nurse-holding" \
+               "-health-symbol_123847-1477.jpg"
         render_sidebar(logo)
         st.title("🤖 Care-Bot Ai")
         st.markdown("<style>body {font-size: 18px;}</style>",
