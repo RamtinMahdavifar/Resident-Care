@@ -19,39 +19,12 @@ from streamlit_chat import message
 conversation_history: List[str] = []
 
 
-
-# Provide the path to your logo image file
-logo = "https://img.freepik.com/premium-vector/cute-nurse-holding-health-symbol_123847-1477.jpg"
-
-
-
-st.sidebar.markdown(
-    """
-    <div style="display: flex; justify-content: center;">
-        <img src="{}" style="width:250px;height:250px;">
-    </div>
-    <hr style='border: none; border-top: 1px solid #ccc; margin: 20px 0px;'>
-    """.format(logo),
-    unsafe_allow_html=True,
-)
-
-# Define the robot emoji
-robot_emoji = "�"
-
-
-def alert_assistance_request_sent():
+def alert_assistance_request_sent(is_ui):
     response_text = "It seems you require assistance. Your request for " \
                     "assistance has been sent to your caregiver."
     print("CareBot AI Response:\n")
-    wrapped_response = textwrap.fill(response_text, width=70)
-    indented_response = "\n".join(
-        ["<div style='text-align: left;'>" + line + "</div>" for line in
-         wrapped_response.splitlines()])
 
-    st.markdown(
-        f"<div style='background-color: #ADD8E6; padding: 10px; border-radius: 5px; text-align: left; color: black;'>"
-        f"{indented_response}</div>",
-        unsafe_allow_html=True)
+    display_message(response_text, is_ui, False)
     process_and_play_response(response_text)
 
     # Summarising conversation and sending SMS to resident
@@ -65,67 +38,78 @@ def alert_assistance_request_sent():
     conversation_history.clear()
 
 
-def main(is_ui = False):
+# Function to render the sidebar with the logo
+def render_sidebar(logo_url):
+    st.sidebar.markdown(
+        f"""
+        <div style="display: flex; justify-content: center;">
+            <img src="{logo_url}" style="width:250px;height:250px;">
+        </div>
+        <hr style='border: none; border-top: 1px solid #ccc; margin: 20px 0px;'>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+# Function to display a user or bot message in Streamlit
+def display_message(message_text, is_ui, is_user=True):
+
+    if not is_ui:
+        return
+
+    color = "blue" if is_user else "#ADD8E6"
+    text_color = "white" if is_user else "black"
+
+    wrapped_text = textwrap.fill(message_text, width=70 if is_user else 90)
+    indented_text = "\n".join(
+        [f"<div style='text-align: left;'>{line}</div>" for line in
+         wrapped_text.splitlines()]
+    )
+
+    st.markdown(
+        f"<div style='padding: 10px;'>"
+        f"<div style='background-color: {color}; padding: 10px; border-radius: 5px; color: {text_color}; text-align: left;'>"
+        f"{indented_text}</div>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+
+
+def main(is_ui=False):
     """
     Main function to run program.
     """
-
-    if(is_ui):
+    if is_ui:
+        logo = "https://img.freepik.com/premium-vector/cute-nurse-holding-health-symbol_123847-1477.jpg"
+        render_sidebar(logo)
         st.title("🤖 Care-Bot Ai")
         st.markdown("<style>body {font-size: 18px;}</style>",
                     unsafe_allow_html=True)
+        st.text("🤖  Listening...")
 
     while True:
         conversation_history.clear()
         print("\nSystem Listening")
 
-        st.text(robot_emoji + " Listening...")
         input_text = listen_for_keywords()
-        wrapped_input = textwrap.fill(input_text, width=90)
-        indented_input = "\n".join(
-            ["<div style='text-align: left;'>" + line + "</div>" for line in
-             wrapped_input.splitlines()])
-
-        st.markdown(f"<div style='padding: 30px;'>"
-                    f"<div style='background-color: blue; padding: 10px; border-radius: 5px; color: white; text-align: left;'>"
-                    f"{indented_input}</div>"
-                    f"</div>",
-                    unsafe_allow_html=True)
 
         if is_urgent_assistance_needed(input_text):
             print(f"\nYou: \n{input_text}\n")
+            display_message(input_text, is_ui)
+
             append_conversation_history(input_text, "", conversation_history)
             alert_assistance_request_sent()
             continue
 
         while True:
             print(f"\nYou: \n{input_text}\n")
-            wrapped_input = textwrap.fill(input_text, width=90)
-            indented_input = "\n".join(
-                ["<div style='text-align: left;'>" + line + "</div>" for line
-                 in
-                 wrapped_input.splitlines()])
-
-            st.markdown(f"<div style='padding: 30px;'>"
-                        f"<div style='background-color: blue; padding: 10px; border-radius: 5px; color: white; text-align: left;'>"
-                        f"{indented_input}</div>"
-                        f"</div>",
-                        unsafe_allow_html=True)
+            display_message(input_text, is_ui)
 
             response_text = generate_response(input_text, conversation_history)
             print(" CareBot AI Response:\n")
 
-            wrapped_response = textwrap.fill(response_text, width=70)
-            indented_response = "\n".join(
-                ["<div style='text-align: left;'>" + line + "</div>" for line
-                 in wrapped_response.splitlines()])
-
-            st.markdown(
-                f"<div style='background-color: #ADD8E6; padding: 10px; border-radius: 5px; text-align: left; color: black;'>"
-                f"{indented_response}</div>",
-                unsafe_allow_html=True)
+            display_message(response_text, is_ui, False)
             process_and_play_response(response_text)
-
 
             beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
             input_text = transcribe_audio()
@@ -134,17 +118,8 @@ def main(is_ui = False):
                     input_text,
                     conversation_history)):
                 print(f"\nYou: {input_text}\n")
-                wrapped_input = textwrap.fill(input_text, width=90)
-                indented_input = "\n".join(
-                    ["<div style='text-align: left;'>" + line + "</div>" for
-                     line in
-                     wrapped_input.splitlines()])
+                display_message(input_text, is_ui)
 
-                st.markdown(f"<div style='padding: 30px;'>"
-                            f"<div style='background-color: blue; padding: 10px; border-radius: 5px; color: white; text-align: left;'>"
-                            f"{indented_input}</div>"
-                            f"</div>",
-                            unsafe_allow_html=True)
                 alert_assistance_request_sent()
                 break
 
@@ -157,6 +132,7 @@ def main(is_ui = False):
                                 "name " \
                                 "Care-Bot. " \
                                 "Goodbye for now.\n"
+                display_message(response_text, is_ui, False)
                 process_and_play_response(response_text)
                 break
 
