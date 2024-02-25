@@ -52,29 +52,44 @@ def alert_assistance_request_sent():
 
 
 # Function to render the sidebar with the logo
-def render_sidebar(logo_url):
+def render_sidebar(logo_path):
     """
-    Renders the sidebar in the Streamlit app with a logo and introductory text.
+    Renders the sidebar in the Streamlit app with a logo from a local path
+    and extended introductory text.
 
-    Parameters:
-    - logo_url (str): The URL to the logo image to be displayed in the sidebar.
+    Parameters: - logo_path (str): The local file path to the logo image to
+    be displayed in the sidebar.
 
-    The sidebar includes:
-    - A logo centered at the top.
-    - A horizontal rule for separation.
-    - Introductory text about the Care-Bot.
+    The sidebar includes: - A logo centered at the top. - Detailed
+    introductory text about the capabilities of Care-Bot, including
+    listening for keywords and providing assistance.
     """
 
+    # Display the image from a local path
+    st.sidebar.image(logo_path, width=250,
+                     caption="Care-Bot, your personal assistant 🤖")
+
+    # Add the updated introductory text
     st.sidebar.markdown(
-        f"""
-        <div style="display: flex; justify-content: center;">
-            <img src="{logo_url}" style="width:250px;height:250px;"> </div> 
-            <hr style='border: none; border-top: 1px solid #ccc; margin: 
-            20px 0px;'> <p style='text-align: center; font-size: 16px;'>Hi 
-            there! I'm Care-Bot, your personal assistant 🤖.</p> <p 
-            style='text-align: center; font-size: 16px;'>I can send a 
-            request to your Caregiver when the need for assistance is 
-            detected.</p> """,
+        """
+        <hr style='border: none; border-top: 1px solid #ccc; margin: 
+        20px 0px;'>
+        <p style='text-align: center; font-size: 16px;'>
+            Hi there! I'm <strong>Care-Bot</strong>, your personal assistant 
+            🤖.
+        </p>
+        <p style='text-align: center; font-size: 16px;'>
+            I'm here to help you by listening for keywords and situations where
+             you may require assistance.
+        </p>
+        <p style='text-align: center; font-size: 16px;'>
+            You can talk to me at any time using my name 
+            <strong>Care-Bot</strong>.
+        </p>
+        <p style='text-align: center; font-size: 16px;'>
+            I'm always listening and ready to assist you with your needs.
+        </p>
+        """,
         unsafe_allow_html=True,
     )
 
@@ -153,8 +168,7 @@ def main():
     Main function to run program.
     """
     if is_ui:
-        logo = "https://img.freepik.com/premium-vector/cute-nurse-holding" \
-               "-health-symbol_123847-1477.jpg"
+        logo = "Images/logo.jpg"
         render_sidebar(logo)
         st.title("🤖 Care-Bot Ai")
         st.markdown("<style>body {font-size: 18px;}</style>",
