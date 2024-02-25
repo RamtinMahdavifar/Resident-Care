@@ -26,8 +26,29 @@ Create a `.env` file in the project root with the following content:
 
 ```plaintext
 # Open API
-OPENAI_API_KEY='Your OPen API Key'
+OPENAI_API_KEY='Your Open API Key'
 
 # Twilio
 ACCOUNT_SID='Your ACCOUNT_SID'
 AUTH_TOKEN='Your AUTH_TOKEN'
+```
+
+## Running the Program
+
+### Running as a Terminal Application
+
+To run the program as a terminal application, use the following command:
+
+```bash
+python3 main.py
+```
+
+### Running as a Web Application with a User Interface
+
+To run the program as a web application with a user interface, use the command:
+
+```bash
+streamlit run /path/to/your/main.py
+```
+
+Please adjust the `/path/to/your/main.py` with the actual path to your `main.py` file on your system.
