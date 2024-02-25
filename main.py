@@ -72,19 +72,19 @@ def render_sidebar(logo_path):
     # Add the updated introductory text
     st.sidebar.markdown(
         """
-        <hr style='border: none; border-top: 1px solid #ccc; margin: 
-        20px 0px;'>
+        <hr style='border: none; border-top: 1px solid #ccc; margin:
+         20px 0px;'>
         <p style='text-align: center; font-size: 16px;'>
-            Hi there! I'm <strong>Care-Bot</strong>, your personal assistant 
-            🤖.
+            Hi there! I'm <strong>Care-Bot</strong>, your personal assistant
+             🤖.
         </p>
         <p style='text-align: center; font-size: 16px;'>
             I'm here to help you by listening for keywords and situations where
              you may require assistance.
         </p>
         <p style='text-align: center; font-size: 16px;'>
-            You can talk to me at any time using my name 
-            <strong>Care-Bot</strong>.
+            You can talk to me at any time using my name
+             <strong>Care-Bot</strong>.
         </p>
         <p style='text-align: center; font-size: 16px;'>
             I'm always listening and ready to assist you with your needs.
