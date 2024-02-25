@@ -94,12 +94,6 @@ def render_sidebar(logo_path):
     )
 
 
-# Function to display a user or bot message in Streamlit Initialize a list
-# in the session state to hold message placeholders if it doesn't exist
-if 'message_placeholders' not in st.session_state:
-    st.session_state['message_placeholders'] = []
-
-
 def display_message(message_text, is_user=True):
     """
     Displays a message in the Streamlit app, with styling based on the
@@ -175,6 +169,12 @@ def main():
                     unsafe_allow_html=True)
         st.text("🤖  Listening...")
 
+        # Function to display a user or bot message in Streamlit Initialize
+        # a list in the session state to hold message placeholders if it
+        # doesn't exist
+        if 'message_placeholders' not in st.session_state:
+            st.session_state['message_placeholders'] = []
+
     while True:
         conversation_history.clear()
         clear_messages()
@@ -236,9 +236,29 @@ def main():
                 break
 
 
+def check_streamlit():
+    """
+    Function to check whether python code is run within streamlit
+
+    Returns
+    -------
+    use_streamlit : boolean
+        True if code is run within streamlit, else False
+    """
+    try:
+        from streamlit.runtime.scriptrunner import get_script_run_ctx
+        if not get_script_run_ctx():
+            use_streamlit = False
+        else:
+            use_streamlit = True
+    except ModuleNotFoundError:
+        use_streamlit = False
+    return use_streamlit
+
+
 if __name__ == "__main__":
     # Automatically detect if we are running as a streamlit application
-    is_ui = 'streamlit' in sys.modules
+    is_ui = check_streamlit()
 
     try:
         main()
