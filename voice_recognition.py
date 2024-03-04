@@ -1,7 +1,7 @@
 import pyaudio
 import json
 from vosk import KaldiRecognizer, Model
-from keyword_detector import check_for_keywords
+from keyword_recognition import check_for_keywords
 
 # Constants for audio settings
 FORMAT = pyaudio.paInt16
