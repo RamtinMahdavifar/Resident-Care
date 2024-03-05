@@ -1,7 +1,7 @@
 import pyaudio
 import json
 from vosk import KaldiRecognizer, Model
-from keyword_recognition import check_for_keywords
+from keyword_recognition import has_keyword
 
 # Constants for audio settings
 FORMAT = pyaudio.paInt16
@@ -77,7 +77,7 @@ def listen_for_keywords_callback(text):
     Returns:
     bool: True to continue processing, False to stop if a keyword is detected.
     """
-    if check_for_keywords(text):
+    if has_keyword(text):
         print(f"Keyword detected in text: {text}")
         return False  # Stop processing if a keyword is detected
     return True  # Continue processing
