@@ -61,15 +61,20 @@ jobs:
       - name: Run smoke tests
         env:
           PYTHONPATH: ${{ github.workspace }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           cd tests/smoke_tests
           pytest test_smoke.py
 
+      - name: Run Unit tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          cd tests/unit_tests
+          pytest test_unit.py
+
       - name: Run integration tests
         env:
           PYTHONPATH: ${{ github.workspace }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           cd tests/integration_tests
           pytest test_gpt_prompts.py

@@ -6,7 +6,7 @@ from chatgpt_prompts import is_urgent_assistance_needed, \
     is_assistance_needed_from_conversation_history
 
 
-@pytest.mark.smoke
+@pytest.mark.integration
 def test_openai_version():
     assert openai.__version__ == "0.28.0"
 
@@ -42,7 +42,8 @@ def test_is_assistance_needed_from_conversation_history():
 
     ]
 
-    resident_input = "I going great and I don't need help. Goodbye For now"
+    resident_input = "I going great and I don't need assistance. Goodbye " \
+                     "For now"
     assert is_assistance_needed_from_conversation_history(resident_input,
                                                           conversation_history
                                                           ) is not True
