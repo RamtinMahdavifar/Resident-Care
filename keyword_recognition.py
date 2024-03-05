@@ -1,7 +1,7 @@
 import re
 
 
-def check_for_keywords(text):
+def has_keyword(text):
     """
     Check if the given text contains keywords indicative of a request for
     assistance or emergency.
