@@ -6,7 +6,7 @@ from chatgpt_prompts import is_urgent_assistance_needed, \
     is_assistance_needed_from_conversation_history
 
 
-@pytest.mark.smoke
+@pytest.mark.integration
 def test_openai_version():
     assert openai.__version__ == "0.28.0"
 
