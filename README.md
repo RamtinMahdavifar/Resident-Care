@@ -31,6 +31,17 @@ OPENAI_API_KEY='Your Open API Key'
 # Twilio
 ACCOUNT_SID='Your ACCOUNT_SID'
 AUTH_TOKEN='Your AUTH_TOKEN'
+TWILIO_PHONE_NUMBER='Twilio's phone number assigned to your account'
+CAREGIVER_PHONE_NUMBER='The phone number of the caregiver who will receive alerts'
+
+Ensure that the phone numbers are in full international format, starting with 
+the '+' sign followed by the country code and the full phone number. 
+
+For example:
+
+In Canada, the country code is +1, so the format will be +1XXXXXXXXXX.
+If you are using a phone number from another country, replace +1 with the 
+appropriate country code for that number.
 ```
 
 ## Running the Program
