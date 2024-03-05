@@ -42,7 +42,8 @@ def test_is_assistance_needed_from_conversation_history():
 
     ]
 
-    resident_input = "I going great and I don't need help. Goodbye For now"
+    resident_input = "I going great and I don't need assistance. Goodbye " \
+                     "For now"
     assert is_assistance_needed_from_conversation_history(resident_input,
                                                           conversation_history
                                                           ) is not True
