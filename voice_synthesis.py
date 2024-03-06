@@ -4,7 +4,8 @@ from TTS.api import TTS
 
 from utilities import remove_temp_files
 
-tts = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC_ph")
+tts_model_name = os.getenv('TTS_MODEL_NAME')
+tts = TTS(model_name=tts_model_name)
 
 
 def synthesize_speech(text, output_directory="output", filename="output.wav"):

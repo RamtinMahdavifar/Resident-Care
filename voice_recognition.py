@@ -1,5 +1,6 @@
 import pyaudio
 import json
+import os
 from vosk import KaldiRecognizer, Model
 from keyword_recognition import has_keyword
 
@@ -10,7 +11,8 @@ RATE = 16000
 FRAMES_PER_BUFFER = 8192
 READ_BUFFER_SIZE = 4096
 
-model = Model(r"vosk-model-en-us-0.42-gigaspeech")
+vosk_model_path = os.getenv(r'VOSK_MODEL_PATH')
+model = Model(vosk_model_path)
 recognizer = KaldiRecognizer(model, 16000)
 
 
