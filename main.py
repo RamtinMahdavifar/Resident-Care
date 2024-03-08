@@ -3,6 +3,9 @@ import os
 import sys
 import traceback
 
+import streamlit as st
+from typing import List
+
 from chatgpt_prompts import generate_response, \
     summarize_conversation_history, \
     is_urgent_assistance_needed, \
@@ -14,15 +17,12 @@ from sms_twilio import send_mms
 from voice_recognition import transcribe_audio, listen_for_keywords
 from utilities import beep
 from voice_synthesis import process_and_play_response
-from typing import List
 
-import streamlit as st
-
-conversation_history: List[str] = []
-is_ui = False
+g_conversation_history: List[str] = []
+g_is_ui = False
 
 
-def alert_assistance_request_sent():
+def alert_assistance_request_sent() -> None:
     """
     Alerts that an assistance request has been sent to the caregiver.
 
@@ -42,17 +42,17 @@ def alert_assistance_request_sent():
 
     # Summarising conversation and sending SMS to resident
     summarized_conversation = summarize_conversation_history(
-        conversation_history)
+        g_conversation_history)
 
     print("Summarized Conversation sent to caregiver:\n" +
           summarized_conversation + "\n")
 
     send_mms(summarized_conversation)
-    conversation_history.clear()
+    g_conversation_history.clear()
 
 
 # Function to render the sidebar with the logo
-def render_sidebar(logo_path):
+def render_sidebar(logo_path: str) -> None:
     """
     Renders the sidebar in the Streamlit app with a logo from a local path
     and extended introductory text.
@@ -94,7 +94,7 @@ def render_sidebar(logo_path):
     )
 
 
-def display_message(message_text, is_user=True):
+def display_message(message_text: str, is_user: bool = True) -> None:
     """
     Displays a message in the Streamlit app, with styling based on the
     message sender.
@@ -111,7 +111,7 @@ def display_message(message_text, is_user=True):
     and each message is stored as a placeholder in the Streamlit session
     state for potential later removal.
     """
-    if not is_ui:
+    if not g_is_ui:
         return
 
     color = "blue" if is_user else "#ADD8E6"
@@ -135,21 +135,21 @@ def display_message(message_text, is_user=True):
     st.session_state['message_placeholders'].append(message_display)
 
 
-def clear_streamlit():
+def clear_streamlit() -> None:
     """
     Use Streamlit's rerun to refresh the app.
     """
-    if not is_ui:
+    if not g_is_ui:
         return
 
     st.rerun()
 
 
-def clear_messages():
+def clear_messages() -> None:
     """
     Clears all messages displayed by the display_message function.
     """
-    if not is_ui:
+    if not g_is_ui:
         return
 
     while st.session_state['message_placeholders']:
@@ -157,7 +157,7 @@ def clear_messages():
         message_placeholder.empty()  # Clear the placeholder
 
 
-def check_streamlit():
+def is_streamlit() -> bool:
     """
     Function to check whether python code is run within streamlit
 
@@ -177,88 +177,112 @@ def check_streamlit():
     return use_streamlit
 
 
-def main():
+def initialize_ui() -> None:
     """
-    Main function to run program.
+    Initializes the UI components if the UI mode is enabled.
     """
-    if is_ui:
+    if g_is_ui:
         logo = "Images/logo.jpg"
         render_sidebar(logo)
-        st.title("🤖 Care-Bot Ai")
+        st.title("🤖 Care-Bot AI")
         st.markdown("<style>body {font-size: 18px;}</style>",
                     unsafe_allow_html=True)
-        st.text("🤖  Listening...")
+        st.text("🤖 Listening...")
 
-        # Function to display a user or bot message in Streamlit Initialize
-        # a list in the session state to hold message placeholders if it
-        # doesn't exist
         if 'message_placeholders' not in st.session_state:
             st.session_state['message_placeholders'] = []
 
+
+def alert_ready() -> None:
+    """
+    Alerts the user that Care-Bot is ready and listening.
+    """
+    message_ready = "\nCare-Bot is ready and is listening.\n"
+    print(message_ready)
+    process_and_play_response(message_ready)
+    beep(800, 200)
+
+
+def handle_urgent_assistance(input_text: str) -> None:
+    """
+    Handles the scenario when urgent assistance is needed.
+    """
+    print(f"\nYou: \n{input_text}\n")
+    display_message(input_text)
+    append_conversation_history(input_text, "", g_conversation_history)
+    alert_assistance_request_sent()
+    clear_messages()
+
+
+def handle_conversation(input_text: str) -> None:
+    """
+    Manages the conversation flow, including generating responses and checking
+    for assistance needs or intent to end the conversation.
+    """
     while True:
-        conversation_history.clear()
-        clear_messages()
+        print(f"\nYou: \n{input_text}\n")
+        display_message(input_text)
 
-        message_ready = "\nCare-Bot is ready and is listening.\n"
-
-        print(message_ready)
-        process_and_play_response(message_ready)
+        response_text = generate_response(input_text, g_conversation_history)
+        print("CareBot AI Response:\n")
+        display_message(response_text, False)
+        process_and_play_response(response_text)
 
         beep(800, 200)
+        input_text = transcribe_audio()
 
+        if is_assistance_needed_from_conversation_history(
+                input_text, g_conversation_history):
+
+            print(f"\nYou: {input_text}\n")
+            display_message(input_text)
+            alert_assistance_request_sent()
+            break
+
+        elif is_intent_to_end_conversation(input_text):
+            print(f"\nYou: {input_text}\n")
+            display_message(input_text)
+            say_goodbye()
+            break
+
+
+def say_goodbye() -> None:
+    """
+    Sends a goodbye message and clears the UI.
+    """
+    response_text = "Thank you. It seems you do not require further " \
+                    "assistance. " \
+                    "Feel free to chat with me anytime using my name " \
+                    "Care-Bot. " \
+                    "Goodbye for now.\n"
+    display_message(response_text, False)
+    process_and_play_response(response_text)
+    clear_messages()
+
+
+def main() -> None:
+    """
+    Main function to run program.
+    """
+    initialize_ui()
+
+    while True:
+        g_conversation_history.clear()
+        clear_messages()
+
+        alert_ready()
         input_text = listen_for_keywords()
 
         if is_urgent_assistance_needed(input_text):
-            print(f"\nYou: \n{input_text}\n")
-            display_message(input_text)
-
-            append_conversation_history(input_text, "", conversation_history)
-            alert_assistance_request_sent()
-            clear_messages()
+            handle_urgent_assistance(input_text)
             continue
 
-        while True:
-            print(f"\nYou: \n{input_text}\n")
-            display_message(input_text)
-
-            response_text = generate_response(input_text, conversation_history)
-            print(" CareBot AI Response:\n")
-
-            display_message(response_text, False)
-            process_and_play_response(response_text)
-
-            beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
-            input_text = transcribe_audio()
-
-            if (is_assistance_needed_from_conversation_history(
-                    input_text,
-                    conversation_history)):
-                print(f"\nYou: {input_text}\n")
-                display_message(input_text)
-
-                alert_assistance_request_sent()
-                clear_messages()
-                break
-
-            elif is_intent_to_end_conversation(input_text):
-                print(f"\nYou: {input_text}\n")
-                display_message(input_text)
-                response_text = "Thank you. It seems you do not require " \
-                                "further " \
-                                "assistance." \
-                                "Feel free to chat with me anytime using my " \
-                                "name " \
-                                "Care-Bot. " \
-                                "Goodbye for now.\n"
-                display_message(response_text, False)
-                process_and_play_response(response_text)
-                clear_messages()
-                break
+        handle_conversation(input_text)
 
 
 if __name__ == "__main__":
     # Automatically detect if we are running as a streamlit application
-    is_ui = check_streamlit()
+    g_is_ui = is_streamlit()
 
     try:
         main()
@@ -275,7 +299,7 @@ if __name__ == "__main__":
 
         # Display the error message in the UI if running in Streamlit,
         # otherwise print to console
-        if is_ui:
+        if g_is_ui:
             display_message(message, False)
             process_and_play_response(message)
             clear_streamlit()
