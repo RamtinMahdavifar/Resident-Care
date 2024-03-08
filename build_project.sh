@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Check for Python 3.9.x installation
+PYTHON_VERSION=$(python3 --version)
+if [[ "$PYTHON_VERSION" =~ Python\ 3\.9 ]]; then
+    echo "Python 3.9.x is installed."
+else
+    echo "Error: Python 3.9.x is not installed."
+    exit 1
+fi
+
 # need to run the other commands here that are on the google docs.
 
 # Check if requirements.txt exists in the current directory
