@@ -105,10 +105,38 @@ def test_has_keyword_on_non_keywords():
     """
     # List of words that are not considered as keywords.
     non_keywords = ["hello", "sad", "goodbye", "friend", "walk", "play",
-                    "music","dinner", "book", "computer", "phone", "table",
+                    "music", "dinner", "book", "computer", "phone", "table",
                     "chair", "sleepy"]
 
     # Loop through the non-keywords list and test each with has_keyword
     for word in non_keywords:
         result = has_keyword(word)
         assert not result, f"Non-keyword detected as keyword: {word}"
+
+
+def test_has_keyword_on_sentences_with_no_keywords():
+    """
+    Tests the has_keyword function on sentences that do not contain any of
+    the predefined keywords to ensure it correctly returns False for these
+    sentences.
+    """
+    # List of sentences that are expected not to contain any keywords.
+    non_keyword_sentences = [
+        "I had a lovely dinner with my family.",
+        "The weather today is incredibly sunny.",
+        "How do you solve this math problem?",
+        "Let's go for a walk in the park.",
+        "I'm reading a fascinating book on history.",
+        "I want to play games on the computer?",
+        "Listening to music is a great way to relax.",
+        "This painting looks beautiful.",
+        "The movie last night was really boring.",
+        "I want to buy some groceries for the week."
+    ]
+
+    # Loop through the list of non-keyword sentences and test each with
+    # has_keyword
+    for sentence in non_keyword_sentences:
+        result = has_keyword(sentence)
+        assert not result, f"False positive: Detected keyword in sentence: " \
+                           f"'{sentence}'"
