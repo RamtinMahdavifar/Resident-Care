@@ -3,6 +3,9 @@ import os
 import sys
 import traceback
 
+import streamlit as st
+from typing import List
+
 from chatgpt_prompts import generate_response, \
     summarize_conversation_history, \
     is_urgent_assistance_needed, \
@@ -14,12 +17,9 @@ from sms_twilio import send_mms
 from voice_recognition import transcribe_audio, listen_for_keywords
 from utilities import beep
 from voice_synthesis import process_and_play_response
-from typing import List
 
-import streamlit as st
-
-conversation_history: List[str] = []
-is_ui = False
+g_conversation_history: List[str] = []
+g_is_ui = False
 
 
 def alert_assistance_request_sent():
@@ -42,13 +42,13 @@ def alert_assistance_request_sent():
 
     # Summarising conversation and sending SMS to resident
     summarized_conversation = summarize_conversation_history(
-        conversation_history)
+        g_conversation_history)
 
     print("Summarized Conversation sent to caregiver:\n" +
           summarized_conversation + "\n")
 
     send_mms(summarized_conversation)
-    conversation_history.clear()
+    g_conversation_history.clear()
 
 
 # Function to render the sidebar with the logo
@@ -111,7 +111,7 @@ def display_message(message_text, is_user=True):
     and each message is stored as a placeholder in the Streamlit session
     state for potential later removal.
     """
-    if not is_ui:
+    if not g_is_ui:
         return
 
     color = "blue" if is_user else "#ADD8E6"
@@ -139,7 +139,7 @@ def clear_streamlit():
     """
     Use Streamlit's rerun to refresh the app.
     """
-    if not is_ui:
+    if not g_is_ui:
         return
 
     st.rerun()
@@ -149,7 +149,7 @@ def clear_messages():
     """
     Clears all messages displayed by the display_message function.
     """
-    if not is_ui:
+    if not g_is_ui:
         return
 
     while st.session_state['message_placeholders']:
@@ -181,7 +181,7 @@ def initialize_ui():
     """
     Initializes the UI components if the UI mode is enabled.
     """
-    if is_ui:
+    if g_is_ui:
         logo = "Images/logo.jpg"
         render_sidebar(logo)
         st.title("🤖 Care-Bot AI")
@@ -209,7 +209,7 @@ def handle_urgent_assistance(input_text):
     """
     print(f"\nYou: \n{input_text}\n")
     display_message(input_text)
-    append_conversation_history(input_text, "", conversation_history)
+    append_conversation_history(input_text, "", g_conversation_history)
     alert_assistance_request_sent()
     clear_messages()
 
@@ -223,7 +223,7 @@ def handle_conversation(input_text):
         print(f"\nYou: \n{input_text}\n")
         display_message(input_text)
 
-        response_text = generate_response(input_text, conversation_history)
+        response_text = generate_response(input_text, g_conversation_history)
         print("CareBot AI Response:\n")
         display_message(response_text, False)
         process_and_play_response(response_text)
@@ -231,9 +231,9 @@ def handle_conversation(input_text):
         beep(800, 200)
         input_text = transcribe_audio()
 
-        if is_assistance_needed_from_conversation_history(input_text,
-                                                          conversation_history
-                                                          ):
+        if is_assistance_needed_from_conversation_history(
+                input_text, g_conversation_history):
+
             print(f"\nYou: {input_text}\n")
             display_message(input_text)
             alert_assistance_request_sent()
@@ -267,7 +267,7 @@ def main():
     initialize_ui()
 
     while True:
-        conversation_history.clear()
+        g_conversation_history.clear()
         clear_messages()
 
         alert_ready()
@@ -282,7 +282,7 @@ def main():
 
 if __name__ == "__main__":
     # Automatically detect if we are running as a streamlit application
-    is_ui = is_streamlit()
+    g_is_ui = is_streamlit()
 
     try:
         main()
@@ -299,7 +299,7 @@ if __name__ == "__main__":
 
         # Display the error message in the UI if running in Streamlit,
         # otherwise print to console
-        if is_ui:
+        if g_is_ui:
             display_message(message, False)
             process_and_play_response(message)
             clear_streamlit()
