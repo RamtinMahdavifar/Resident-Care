@@ -22,7 +22,7 @@ g_conversation_history: List[str] = []
 g_is_ui = False
 
 
-def alert_assistance_request_sent():
+def alert_assistance_request_sent() -> None:
     """
     Alerts that an assistance request has been sent to the caregiver.
 
@@ -52,7 +52,7 @@ def alert_assistance_request_sent():
 
 
 # Function to render the sidebar with the logo
-def render_sidebar(logo_path):
+def render_sidebar(logo_path: str) -> None:
     """
     Renders the sidebar in the Streamlit app with a logo from a local path
     and extended introductory text.
@@ -94,7 +94,7 @@ def render_sidebar(logo_path):
     )
 
 
-def display_message(message_text, is_user=True):
+def display_message(message_text: str, is_user: bool = True) -> None:
     """
     Displays a message in the Streamlit app, with styling based on the
     message sender.
@@ -135,7 +135,7 @@ def display_message(message_text, is_user=True):
     st.session_state['message_placeholders'].append(message_display)
 
 
-def clear_streamlit():
+def clear_streamlit() -> None:
     """
     Use Streamlit's rerun to refresh the app.
     """
@@ -145,7 +145,7 @@ def clear_streamlit():
     st.rerun()
 
 
-def clear_messages():
+def clear_messages() -> None:
     """
     Clears all messages displayed by the display_message function.
     """
@@ -157,7 +157,7 @@ def clear_messages():
         message_placeholder.empty()  # Clear the placeholder
 
 
-def is_streamlit():
+def is_streamlit() -> bool:
     """
     Function to check whether python code is run within streamlit
 
@@ -177,7 +177,7 @@ def is_streamlit():
     return use_streamlit
 
 
-def initialize_ui():
+def initialize_ui() -> None:
     """
     Initializes the UI components if the UI mode is enabled.
     """
@@ -193,7 +193,7 @@ def initialize_ui():
             st.session_state['message_placeholders'] = []
 
 
-def alert_ready():
+def alert_ready() -> None:
     """
     Alerts the user that Care-Bot is ready and listening.
     """
@@ -203,7 +203,7 @@ def alert_ready():
     beep(800, 200)
 
 
-def handle_urgent_assistance(input_text):
+def handle_urgent_assistance(input_text: str) -> None:
     """
     Handles the scenario when urgent assistance is needed.
     """
@@ -214,7 +214,7 @@ def handle_urgent_assistance(input_text):
     clear_messages()
 
 
-def handle_conversation(input_text):
+def handle_conversation(input_text: str) -> None:
     """
     Manages the conversation flow, including generating responses and checking
     for assistance needs or intent to end the conversation.
@@ -246,7 +246,7 @@ def handle_conversation(input_text):
             break
 
 
-def say_goodbye():
+def say_goodbye() -> None:
     """
     Sends a goodbye message and clears the UI.
     """
@@ -260,7 +260,7 @@ def say_goodbye():
     clear_messages()
 
 
-def main():
+def main() -> None:
     """
     Main function to run program.
     """
