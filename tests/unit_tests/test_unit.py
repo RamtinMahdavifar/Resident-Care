@@ -96,3 +96,19 @@ def test_has_keyword_on_sentences_with_keywords():
                 print(
                     f"Error processing sentence template '{template}' with "
                     f"keyword '{keyword}': {e}")
+
+
+def test_has_keyword_on_non_keywords():
+    """
+    Tests the has_keyword function on words that are not defined as keywords
+    to ensure it accurately returns False for non-keyword inputs.
+    """
+    # List of words that are not considered as keywords.
+    non_keywords = ["hello", "sad", "goodbye", "friend", "walk", "play",
+                    "music","dinner", "book", "computer", "phone", "table",
+                    "chair", "sleepy"]
+
+    # Loop through the non-keywords list and test each with has_keyword
+    for word in non_keywords:
+        result = has_keyword(word)
+        assert not result, f"Non-keyword detected as keyword: {word}"
