@@ -157,6 +157,26 @@ def clear_messages():
         message_placeholder.empty()  # Clear the placeholder
 
 
+def check_streamlit():
+    """
+    Function to check whether python code is run within streamlit
+
+    Returns
+    -------
+    use_streamlit : boolean
+        True if code is run within streamlit, else False
+    """
+    try:
+        from streamlit.runtime.scriptrunner import get_script_run_ctx
+        if not get_script_run_ctx():
+            use_streamlit = False
+        else:
+            use_streamlit = True
+    except ModuleNotFoundError:
+        use_streamlit = False
+    return use_streamlit
+
+
 def main():
     """
     Main function to run program.
@@ -234,26 +254,6 @@ def main():
                 process_and_play_response(response_text)
                 clear_messages()
                 break
-
-
-def check_streamlit():
-    """
-    Function to check whether python code is run within streamlit
-
-    Returns
-    -------
-    use_streamlit : boolean
-        True if code is run within streamlit, else False
-    """
-    try:
-        from streamlit.runtime.scriptrunner import get_script_run_ctx
-        if not get_script_run_ctx():
-            use_streamlit = False
-        else:
-            use_streamlit = True
-    except ModuleNotFoundError:
-        use_streamlit = False
-    return use_streamlit
 
 
 if __name__ == "__main__":
