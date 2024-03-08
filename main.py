@@ -157,7 +157,7 @@ def clear_messages():
         message_placeholder.empty()  # Clear the placeholder
 
 
-def check_streamlit():
+def is_streamlit():
     """
     Function to check whether python code is run within streamlit
 
@@ -177,88 +177,112 @@ def check_streamlit():
     return use_streamlit
 
 
-def main():
+def initialize_ui():
     """
-    Main function to run program.
+    Initializes the UI components if the UI mode is enabled.
     """
     if is_ui:
         logo = "Images/logo.jpg"
         render_sidebar(logo)
-        st.title("🤖 Care-Bot Ai")
+        st.title("🤖 Care-Bot AI")
         st.markdown("<style>body {font-size: 18px;}</style>",
                     unsafe_allow_html=True)
-        st.text("🤖  Listening...")
+        st.text("🤖 Listening...")
 
-        # Function to display a user or bot message in Streamlit Initialize
-        # a list in the session state to hold message placeholders if it
-        # doesn't exist
         if 'message_placeholders' not in st.session_state:
             st.session_state['message_placeholders'] = []
+
+
+def alert_ready():
+    """
+    Alerts the user that Care-Bot is ready and listening.
+    """
+    message_ready = "\nCare-Bot is ready and is listening.\n"
+    print(message_ready)
+    process_and_play_response(message_ready)
+    beep(800, 200)
+
+
+def handle_urgent_assistance(input_text):
+    """
+    Handles the scenario when urgent assistance is needed.
+    """
+    print(f"\nYou: \n{input_text}\n")
+    display_message(input_text)
+    append_conversation_history(input_text, "", conversation_history)
+    alert_assistance_request_sent()
+    clear_messages()
+
+
+def handle_conversation(input_text):
+    """
+    Manages the conversation flow, including generating responses and checking
+    for assistance needs or intent to end the conversation.
+    """
+    while True:
+        print(f"\nYou: \n{input_text}\n")
+        display_message(input_text)
+
+        response_text = generate_response(input_text, conversation_history)
+        print("CareBot AI Response:\n")
+        display_message(response_text, False)
+        process_and_play_response(response_text)
+
+        beep(800, 200)
+        input_text = transcribe_audio()
+
+        if is_assistance_needed_from_conversation_history(input_text,
+                                                          conversation_history
+                                                          ):
+            print(f"\nYou: {input_text}\n")
+            display_message(input_text)
+            alert_assistance_request_sent()
+            break
+
+        elif is_intent_to_end_conversation(input_text):
+            print(f"\nYou: {input_text}\n")
+            display_message(input_text)
+            say_goodbye()
+            break
+
+
+def say_goodbye():
+    """
+    Sends a goodbye message and clears the UI.
+    """
+    response_text = "Thank you. It seems you do not require further " \
+                    "assistance. " \
+                    "Feel free to chat with me anytime using my name " \
+                    "Care-Bot. " \
+                    "Goodbye for now.\n"
+    display_message(response_text, False)
+    process_and_play_response(response_text)
+    clear_messages()
+
+
+def main():
+    """
+    Main function to run program.
+    """
+    initialize_ui()
 
     while True:
         conversation_history.clear()
         clear_messages()
 
-        message_ready = "\nCare-Bot is ready and is listening.\n"
-
-        print(message_ready)
-        process_and_play_response(message_ready)
-
-        beep(800, 200)
-
+        alert_ready()
         input_text = listen_for_keywords()
 
         if is_urgent_assistance_needed(input_text):
-            print(f"\nYou: \n{input_text}\n")
-            display_message(input_text)
-
-            append_conversation_history(input_text, "", conversation_history)
-            alert_assistance_request_sent()
-            clear_messages()
+            handle_urgent_assistance(input_text)
             continue
 
-        while True:
-            print(f"\nYou: \n{input_text}\n")
-            display_message(input_text)
-
-            response_text = generate_response(input_text, conversation_history)
-            print(" CareBot AI Response:\n")
-
-            display_message(response_text, False)
-            process_and_play_response(response_text)
-
-            beep(800, 200)  # Play a beep at 800 Hz for 200 milliseconds
-            input_text = transcribe_audio()
-
-            if (is_assistance_needed_from_conversation_history(
-                    input_text,
-                    conversation_history)):
-                print(f"\nYou: {input_text}\n")
-                display_message(input_text)
-
-                alert_assistance_request_sent()
-                clear_messages()
-                break
-
-            elif is_intent_to_end_conversation(input_text):
-                print(f"\nYou: {input_text}\n")
-                display_message(input_text)
-                response_text = "Thank you. It seems you do not require " \
-                                "further " \
-                                "assistance." \
-                                "Feel free to chat with me anytime using my " \
-                                "name " \
-                                "Care-Bot. " \
-                                "Goodbye for now.\n"
-                display_message(response_text, False)
-                process_and_play_response(response_text)
-                clear_messages()
-                break
+        handle_conversation(input_text)
 
 
 if __name__ == "__main__":
     # Automatically detect if we are running as a streamlit application
-    is_ui = check_streamlit()
+    is_ui = is_streamlit()
 
     try:
         main()
