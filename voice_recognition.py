@@ -1,6 +1,7 @@
 import pyaudio
 import json
 import os
+from typing import Callable
 from vosk import KaldiRecognizer, Model
 from keyword_recognition import has_keyword
 
@@ -16,7 +17,7 @@ model = Model(vosk_model_path)
 recognizer = KaldiRecognizer(model, 16000)
 
 
-def process_audio_stream(callback):
+def process_audio_stream(callback: Callable[[str], bool]) -> str:
     """
      Process audio input from the default microphone, uses a callback function
      to determine what to do with the transcribed text, and returns all
@@ -53,7 +54,7 @@ def process_audio_stream(callback):
         return formatted_text
 
 
-def transcribe_audio_callback(text):
+def transcribe_audio_callback(text: str) -> bool:
     """
     Callback function for transcribing audio.
     Always returns False to stop after first transcription.
@@ -68,7 +69,7 @@ def transcribe_audio_callback(text):
     return False  # Stop after the first transcription
 
 
-def listen_for_keywords_callback(text):
+def listen_for_keywords_callback(text: str) -> bool:
     """
     Callback function for listening for keywords. Checks if a keyword is
     present and returns False if a keyword is detected to stop processing.
@@ -85,7 +86,7 @@ def listen_for_keywords_callback(text):
     return True  # Continue processing
 
 
-def transcribe_audio():
+def transcribe_audio() -> str:
     """
     Transcribe audio input from the default microphone using Vosk local speech
     recognition.
@@ -96,7 +97,7 @@ def transcribe_audio():
     return process_audio_stream(transcribe_audio_callback)
 
 
-def listen_for_keywords():
+def listen_for_keywords() -> str:
     """
     Continuously listens until a keyword or set of keywords are spoken in a
     sentence.

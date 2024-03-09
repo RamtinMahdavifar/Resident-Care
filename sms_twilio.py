@@ -12,7 +12,7 @@ twilio_phone_number = os.getenv('TWILIO_PHONE_NUMBER')
 caregiver_phone_number = os.getenv('CAREGIVER_PHONE_NUMBER')
 
 
-def send_mms(body):
+def send_mms(body: str) -> bool:
     """
     Send an MMS message using Twilio.
 

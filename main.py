@@ -4,7 +4,7 @@ import sys
 import traceback
 
 import streamlit as st
-from typing import List
+from typing import List, Dict
 
 from chatgpt_prompts import generate_response, \
     summarize_conversation_history, \
@@ -18,7 +18,7 @@ from voice_recognition import transcribe_audio, listen_for_keywords
 from utilities import beep
 from voice_synthesis import process_and_play_response
 
-g_conversation_history: List[str] = []
+g_conversation_history: List[Dict[str]] = []
 g_is_ui = False
 
 
@@ -137,7 +137,7 @@ def display_message(message_text: str, is_user: bool = True) -> None:
 
 def clear_streamlit() -> None:
     """
-    Use Streamlit's rerun to refresh the app.
+    Use Streamlit rerun to refresh the app.
     """
     if not g_is_ui:
         return

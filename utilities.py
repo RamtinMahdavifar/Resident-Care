@@ -6,7 +6,7 @@ import os
 pygame.mixer.init()
 
 
-def beep(frequency, duration):
+def beep(frequency: int, duration: int) -> None:
     """
     Play a beep sound at a specified frequency and duration.
 
@@ -46,7 +46,7 @@ def beep(frequency, duration):
     sound.stop()
 
 
-def remove_temp_files(file_path):
+def remove_temp_files(file_path: str) -> None:
     """
     Remove temporary files created during the process.
 
