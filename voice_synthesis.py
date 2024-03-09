@@ -70,4 +70,5 @@ def process_and_play_response(response_text: str) -> None:
 
     finally:
         # Delete the file after playing
-        remove_temp_files(output_file_path)
+        if output_file_path is not None:
+            remove_temp_files(output_file_path)

@@ -36,7 +36,7 @@ def process_audio_stream(callback: Callable[[str], bool]) -> str:
                       input=True, frames_per_buffer=FRAMES_PER_BUFFER)
     stream.start_stream()
 
-    formatted_text = None
+    formatted_text = ""
 
     try:
         while True:
