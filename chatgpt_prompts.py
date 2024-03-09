@@ -226,7 +226,7 @@ def is_intent_to_end_conversation(input_text: str) -> bool:
         return False
 
 
-def summarize_conversation_history(conversation_history: List[Dict[str]]
+def summarize_conversation_history(conversation_history: List[Dict[str, str]]
                                    ) -> str:
     """
     Summarizes conversation history with chat GPT in a short concise manner

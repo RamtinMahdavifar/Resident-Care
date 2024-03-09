@@ -18,7 +18,7 @@ from voice_recognition import transcribe_audio, listen_for_keywords
 from utilities import beep
 from voice_synthesis import process_and_play_response
 
-g_conversation_history: List[Dict[str]] = []
+g_conversation_history: List[Dict[str, str]] = []
 g_is_ui = False
 
 
