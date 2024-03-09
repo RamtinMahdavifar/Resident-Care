@@ -8,7 +8,8 @@ tts_model_name = os.getenv('TTS_MODEL_NAME')
 tts = TTS(model_name=tts_model_name)
 
 
-def synthesize_speech(text, output_directory="output", filename="output.wav"):
+def synthesize_speech(text: str, output_directory: str = "output",
+                      filename: str = "output.wav") -> str:
     """
     Synthesize speech from text and save it to a file.
 
@@ -31,7 +32,7 @@ def synthesize_speech(text, output_directory="output", filename="output.wav"):
     return output_file_path
 
 
-def play_audio_file(file_path):
+def play_audio_file(file_path: str) -> None:
     """
     Plays an audio file
 
@@ -51,7 +52,7 @@ def play_audio_file(file_path):
         pygame.time.Clock().tick(check_audio_frequency)
 
 
-def process_and_play_response(response_text):
+def process_and_play_response(response_text: str) -> None:
     """
     Process the response text, synthesize speech, save to a temporary file,
     and play the audio.
@@ -69,4 +70,5 @@ def process_and_play_response(response_text):
 
     finally:
         # Delete the file after playing
-        remove_temp_files(output_file_path)
+        if output_file_path is not None:
+            remove_temp_files(output_file_path)
