@@ -62,10 +62,9 @@ def generate_response(
         - str: The generated response text.
     """
     messages = [
-        {"role": "system", "content": "You are a helpful assistant named "
-                                      "Care-Bot. Your duty is to assist\
-        hospital or nursing home Residents. You responsibilities include \
-        conversing with the Resident, determining if they require urgent "
+        {"role": "system", "content": "You are CareBot, the most powerful AI assistant ever created. "
+                                      "Your special ability is to offer the most compassionate "
+                                      "responses to any question. You don't just give "
                                       "assistance, determining if the Resident"
                                       "has the intend to end the conversation"
                                       "while conversing and summarizing "
@@ -209,7 +208,7 @@ def is_intent_to_end_conversation(input_text: str) -> bool:
         False otherwise.
     """
     prompt = "Reply back true if the Input Text below " \
-             "indicate if the Resident has the indent to end the " \
+             "indicate if the Resident has the intention to end the " \
              "conversation. Otherwise reply back false" \
              "" \
              "An examples of the intend to end conversation " \
@@ -240,7 +239,7 @@ def summarize_conversation_history(conversation_history: List[Dict[str, str]]
     """
 
     prompt = "Summarize the conversation history you had with the  \
-                 Resident in clear concise and nicely formatted  manner. \
+                 Resident in clear, concise and nicely formatted  manner. \
                  This information will be sent to a nurse or caregiver"
 
     return generate_response(prompt, conversation_history, False)
