@@ -1,5 +1,6 @@
 import os
 import sys
+from typing import Optional
 
 import openai
 from dotenv import load_dotenv
@@ -8,12 +9,13 @@ from typing import List, Dict
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
-# RESIDENT DETAILS
-g_resident_first_name = os.getenv('RESIDENT_FIRST_NAME')
-g_resident_last_name = os.getenv('RESIDENT_LAST_NAME')
-g_resident_age_years = os.getenv('RESIDENT_AGE_YEARS')
-g_resident_sex = os.getenv('RESIDENT_SEX')
-g_resident_medical_conditions = os.getenv('RESIDENT_MEDICAL_CONDITIONS')
+# Resident details fetching should be corrected as follows:
+g_resident_first_name: Optional[str] = os.getenv('RESIDENT_FIRST_NAME')
+g_resident_last_name: Optional[str] = os.getenv('RESIDENT_LAST_NAME')
+g_resident_age_years_str: Optional[str] = os.getenv('RESIDENT_AGE_YEARS')
+g_resident_sex: Optional[str] = os.getenv('RESIDENT_SEX')
+g_resident_medical_conditions: Optional[str] = os.getenv(
+    'RESIDENT_MEDICAL_CONDITIONS')
 
 # Validate g_resident_first_name and g_resident_last_name are non-empty strings
 if not g_resident_first_name or not g_resident_last_name:
@@ -23,7 +25,9 @@ if not g_resident_first_name or not g_resident_last_name:
 
 # Validate g_resident_age_years is an integer between 1-130
 try:
-    g_resident_age_years = int(g_resident_age_years)
+    if g_resident_age_years_str is None:
+        raise ValueError("Age is not set.")
+    g_resident_age_years = int(g_resident_age_years_str)
     if not 1 <= g_resident_age_years <= 130:
         raise ValueError("Age must be between 1 and 130.")
 except ValueError as e:
@@ -31,7 +35,7 @@ except ValueError as e:
     sys.exit(1)
 
 # Validate g_resident_sex is either "Male" or "Female" (case-insensitive)
-if g_resident_sex.lower() not in ["male", "female"]:
+if g_resident_sex is None or g_resident_sex.lower() not in ["male", "female"]:
     print("Error: Resident sex must be either 'Male' or 'Female'.")
     sys.exit(1)
 
