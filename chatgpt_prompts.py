@@ -1,4 +1,5 @@
 import os
+import sys
 
 import openai
 from dotenv import load_dotenv
@@ -6,6 +7,36 @@ from typing import List, Dict
 
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
+
+# RESIDENT DETAILS
+g_resident_first_name = openai.api_key = os.getenv('RESIDENT_FIRST_NAME')
+g_resident_last_name = openai.api_key = os.getenv('RESIDENT_LAST_NAME')
+g_resident_age_years = openai.api_key = os.getenv('RESIDENT_AGE_YEARS')
+g_resident_sex = openai.api_key = os.getenv('RESIDENT_SEX')
+g_resident_medical_conditions = os.getenv('RESIDENT_MEDICAL_CONDITIONS')
+
+# Validate g_resident_first_name and g_resident_last_name are non-empty strings
+if not g_resident_first_name or not g_resident_last_name:
+    print("Error: Resident first name and last name must be non-empty "
+          "strings.")
+    sys.exit(1)
+
+# Validate g_resident_age_years is an integer between 1-130
+try:
+    g_resident_age_years = int(g_resident_age_years)
+    if not 1 <= g_resident_age_years <= 130:
+        raise ValueError("Age must be between 1 and 130.")
+except ValueError as e:
+    print(f"Error: Invalid age - {e}")
+    sys.exit(1)
+
+# Validate g_resident_sex is either "Male" or "Female" (case-insensitive)
+if g_resident_sex.lower() not in ["male", "female"]:
+    print("Error: Resident sex must be either 'Male' or 'Female'.")
+    sys.exit(1)
+
+# If all validations pass, you can continue with your program logic
+print("All Resident input data is valid.")
 
 
 def append_conversation_history(
