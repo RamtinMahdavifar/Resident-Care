@@ -106,7 +106,7 @@ def test_has_keyword_on_non_keywords():
     # List of words that are not considered as keywords.
     non_keywords = ["hello", "sad", "goodbye", "friend", "walk", "play",
                     "music", "dinner", "book", "computer", "phone", "table",
-                    "chair", "sleepy"]
+                    "chair", "sleepy", "", " "]
 
     # Loop through the non-keywords list and test each with has_keyword
     for word in non_keywords:
