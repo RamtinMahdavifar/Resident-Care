@@ -9,10 +9,10 @@ load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
 # RESIDENT DETAILS
-g_resident_first_name = openai.api_key = os.getenv('RESIDENT_FIRST_NAME')
-g_resident_last_name = openai.api_key = os.getenv('RESIDENT_LAST_NAME')
-g_resident_age_years = openai.api_key = os.getenv('RESIDENT_AGE_YEARS')
-g_resident_sex = openai.api_key = os.getenv('RESIDENT_SEX')
+g_resident_first_name = os.getenv('RESIDENT_FIRST_NAME')
+g_resident_last_name = os.getenv('RESIDENT_LAST_NAME')
+g_resident_age_years = os.getenv('RESIDENT_AGE_YEARS')
+g_resident_sex = os.getenv('RESIDENT_SEX')
 g_resident_medical_conditions = os.getenv('RESIDENT_MEDICAL_CONDITIONS')
 
 # Validate g_resident_first_name and g_resident_last_name are non-empty strings
