@@ -76,7 +76,7 @@ RESIDENT_FIRST_NAME='John'
 RESIDENT_LAST_NAME='Doe'
 RESIDENT_AGE_YEARS=85
 RESIDENT_SEX='male'
-RESIDENT_MEDICAL_CONDITIONS='dementia, poor mobility, asthma'
+RESIDENT_MEDICAL_CONDITIONS='mild dementia, mobility issues.'
 
 These details will be used to tailor the interaction and alerts for the resident's specific needs and conditions.
 
