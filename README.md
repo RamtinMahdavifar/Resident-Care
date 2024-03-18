@@ -2,7 +2,19 @@
 
 ## Project Files
 
-Access the project files through this [Google Drive link](https://drive.google.com/drive/folders/10UkNdUlFrZ7Nbwz7XC6iyy3upMq62CyO?usp=sharing).
+Access the project files and documentation through this [Google Drive link](https://drive.google.com/drive/folders/10UkNdUlFrZ7Nbwz7XC6iyy3upMq62CyO?usp=sharing).
+
+## Hardware Requirements
+1. 25Gb Free Disk Space
+2. 16Gb Ram
+3. Network Card or Ethernet port
+4. Stereo Output
+5. Microphone Input
+6. x86 CPU Architecture
+
+## Software Requirements
+1. Python 3.9.x (We have tested on Python 3.9.18)
+2. Debian Linux (We have tested on Ubuntu 22.0.4 Operating System)
 
 ## Setup Instructions
 
