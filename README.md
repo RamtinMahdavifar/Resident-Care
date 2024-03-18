@@ -6,13 +6,15 @@ Access the project files through this [Google Drive link](https://drive.google.c
 
 ## Setup Instructions
 
-### Virtual Environment Setup
+### Building and Installing Requirements
 
-1. Set up your Python virtual environment.
-2. Install the required packages using the following command:
+1. Ensure that you have a version of python 3.9 installed on your system. \
+   We have used Python 3.9.18.
+
+2. Run the provided bash script setup_project.sh to install the required packages, and setup the virtual environment. 
 
     ```bash
-    pip install -r requirements.txt
+    ./setup_project.sh 
     ```
 
 ### Vosk Setup (Local Voice Recognition)
@@ -83,13 +85,18 @@ These details will be used to tailor the interaction and alerts for the resident
 ```
 
 ## Running the Program
+1. Ensure you have completed the setup instructions above.
+2. Ensure your virtual environment is activated. If it is not activated run the following command.
+```bash
+source venv/bin/activate
+```
 
 ### Running as a Terminal Application
 
-To run the program as a terminal application, use the following command:
+To run the program as a terminal application, use the following command: 
 
 ```bash
-python3 main.py
+python3 /path/to/your/main.py
 ```
 
 ### Running as a Web Application with a User Interface
