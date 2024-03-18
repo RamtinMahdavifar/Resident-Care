@@ -13,14 +13,15 @@ RUN apt-get update && apt-get install -y \
     libportaudio2 \
     libportaudiocpp0 \
     portaudio19-dev \
+    alsa-utils \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Rust compiler using rustup
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-# Make sure cargo, Rust's package manager, is in the PATH
-ENV PATH="/root/.cargo/bin:${PATH}"
+## Install Rust compiler using rustup
+#RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+#
+## Make sure cargo, Rust's package manager, is in the PATH
+#ENV PATH="/root/.cargo/bin:${PATH}"
 
 COPY . .
 

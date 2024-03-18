@@ -6,3 +6,12 @@ services:
       - "8501:8501"
     environment:
       - NAME=CareBot
+
+    devices:
+      - "/dev/snd"  # Mount the host's sound devices into the container
+
+    deploy:
+      placement:
+        constraints:
+          - node.platform.arch == "amd64"
+          - node.platform.os == "linux"
