@@ -52,6 +52,34 @@ VOSK_MODEL_PATH='Path to your downloaded Vosk model'
 TTS_MODEL_NAME='tts_models/en/ljspeech/tacotron2-DDC_ph' 
 
 You can replace the TTS Model with another if you prefer.
+
+
+# Resident Details
+These environment variables are used to personalize the experience based on the resident's details.
+
+RESIDENT_FIRST_NAME='The first name of the resident'
+RESIDENT_LAST_NAME='The last name of the resident'
+RESIDENT_AGE_YEARS='The age of the resident in years (1-130)'
+RESIDENT_SEX='The sex of the resident ("Male" or "Female")'
+RESIDENT_MEDICAL_CONDITIONS='A comma seperated list of known medical conditions of the resident'
+
+# Setting Resident Details
+Set these variables to reflect the resident's personal information. 
+Ensure that the age is an integer between 1 and 130, and the sex is 
+specified as either "Male" or "Female" (case insensitive). 
+The medical conditions should be a comma-separated list of 
+conditions without any special characters.
+
+For example:
+
+RESIDENT_FIRST_NAME='John'
+RESIDENT_LAST_NAME='Doe'
+RESIDENT_AGE_YEARS=85
+RESIDENT_SEX='male'
+RESIDENT_MEDICAL_CONDITIONS='mild dementia, mobility issues.'
+
+These details will be used to tailor the interaction and alerts for the resident's specific needs and conditions.
+
 ```
 
 ## Running the Program
