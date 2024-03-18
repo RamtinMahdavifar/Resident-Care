@@ -12,9 +12,8 @@ def test_openai_version():
 
 
 def test_is_urgent_assistance_needed():
-    assert (is_urgent_assistance_needed("Hi ChatGPT")) is not True
-    assert (is_urgent_assistance_needed("I am tired")) is not \
-           True
+    assert (is_urgent_assistance_needed("Hi ChatGPT")) is False
+    assert (is_urgent_assistance_needed("I am tired")) is False
     assert (is_urgent_assistance_needed("I fell down")) is True
     assert (is_urgent_assistance_needed("I need my medication")) is True
     assert (is_urgent_assistance_needed("Ahh my chest hurts and I can't breath"
@@ -22,7 +21,7 @@ def test_is_urgent_assistance_needed():
 
 
 def test_is_intent_to_end_conversation():
-    assert (is_intent_to_end_conversation("Hi ChatGPT")) is not True
+    assert (is_intent_to_end_conversation("Hi ChatGPT")) is False
     assert (is_intent_to_end_conversation("GoodBye")) is True
     assert (is_intent_to_end_conversation("I don't want to talk anymore")) \
            is True
@@ -46,7 +45,7 @@ def test_is_assistance_needed_from_conversation_history():
                      "For now"
     assert is_assistance_needed_from_conversation_history(resident_input,
                                                           conversation_history
-                                                          ) is not True
+                                                          ) is False
 
     conversation_history2 = [
         {

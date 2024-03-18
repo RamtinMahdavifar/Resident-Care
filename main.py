@@ -211,7 +211,7 @@ def handle_urgent_assistance(input_text: str) -> None:
     display_message(input_text)
     append_conversation_history(input_text, "", g_conversation_history)
     alert_assistance_request_sent()
-    clear_messages()
+    # clear_messages()
 
 
 def handle_conversation(input_text: str) -> None:
@@ -231,19 +231,16 @@ def handle_conversation(input_text: str) -> None:
         beep(800, 200)
         input_text = transcribe_audio()
 
-        if is_assistance_needed_from_conversation_history(
-                input_text, g_conversation_history):
+        if is_intent_to_end_conversation(input_text):
+            say_goodbye()
+            break
 
-            print(f"\nYou: {input_text}\n")
-            display_message(input_text)
+        elif is_assistance_needed_from_conversation_history(
+                input_text, g_conversation_history):
             alert_assistance_request_sent()
             break
 
-        elif is_intent_to_end_conversation(input_text):
-            print(f"\nYou: {input_text}\n")
-            display_message(input_text)
-            say_goodbye()
-            break
+
 
 
 def say_goodbye() -> None:
@@ -257,7 +254,7 @@ def say_goodbye() -> None:
                     "Goodbye for now.\n"
     display_message(response_text, False)
     process_and_play_response(response_text)
-    clear_messages()
+    # clear_messages()
 
 
 def main() -> None:
