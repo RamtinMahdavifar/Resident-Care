@@ -247,8 +247,39 @@ def summarize_conversation_history(conversation_history: List[Dict[str, str]]
         -str: The generated response text.
     """
 
-    prompt = "Summarize the conversation history you had with the  \
-                 Resident in clear, concise and nicely formatted  manner. \
-                 This information will be sent to a nurse or caregiver"
-
+    prompt = """
+             Your task is to summarize the relevant assistance needs of the 
+             Resident based on the conversation_history.
+             
+             The last element of the conversation_history list indicates the
+             Resident's requirement for assistance. 
+             
+             Based on the last element filter our irrelevant elements in the
+             conversation_history and summarize the assistance needs of the 
+             Resident.
+             
+             The needs should be summarized in a manner relevant to the 
+             Resident's CareGiver. The CareGiver is a Nurse or CareTaker for
+             the Resident.
+             
+             Ensure that the summary is structured logically in order of 
+             message events and easily to comprehensible and is 
+             less than 1500 character long.
+             
+             Format the summary in the following manner:
+             
+             Name: Resident's Full Name
+             Age: Resident's age
+             Medical Conditions: Resident's medical conditions
+             Assistance Need: Maximum 2 sentence summary of the context of 
+             assistance request.
+           
+             Recommended Course of Actions:      
+             Provide bullet points or numbered list of specific 
+                assistance needs, each briefly described. Only include the
+                top 3 assistance needs and keep the bullet points concise 
+                and less than 10 words in length..
+                    
+            
+            """
     return generate_response(prompt, conversation_history)
