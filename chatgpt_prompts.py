@@ -45,7 +45,8 @@ print("All Resident input data is valid.")
 
 def generate_response(
         input_text: str,
-        conversation_history: List[Dict[str, str]]
+        conversation_history: List[Dict[str, str]],
+        is_save_conversation_history: bool = True
 ) -> str:
     """
     Generate a response to the input text using OpenAI's GPT model and
@@ -115,7 +116,13 @@ def generate_response(
     )
 
     response_text = response['choices'][0]['message']['content']
-    messages.append({"role": "assistant", "content": response_text})
+
+    if is_save_conversation_history:
+        if len(input_text) != 0:
+            conversation_history.append({"role": "user", "content": input_text})
+
+        if len(response_text) != 0:
+            conversation_history.append({"role": "assistant", "content": response_text})
 
     return response_text
 
