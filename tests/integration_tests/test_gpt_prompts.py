@@ -10,13 +10,13 @@ def test_openai_version():
     assert openai.__version__ == "0.28.0"
 
 
-# def test_is_urgent_assistance_needed():
-#     assert (is_urgent_assistance_needed("Hi ChatGPT")) is False
-#     assert (is_urgent_assistance_needed("I am tired")) is False
-#     assert (is_urgent_assistance_needed("I fell down")) is True
-#     assert (is_urgent_assistance_needed("I need my medication")) is True
-#     assert (is_urgent_assistance_needed("Ahh my chest hurts and I can't breath"
-#                                         )) is True
+def test_is_urgent_assistance_needed():
+    assert (is_urgent_assistance_needed("Hi ChatGPT")) is False
+    assert (is_urgent_assistance_needed("I am tired")) is False
+    assert (is_urgent_assistance_needed("I fell down")) is True
+    assert (is_urgent_assistance_needed("I need my medication")) is True
+    assert (is_urgent_assistance_needed("Ahh my chest hurts and I can't breath"
+                                        )) is True
 
 
 def test_is_intent_to_end_conversation():
