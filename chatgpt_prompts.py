@@ -399,20 +399,20 @@ def summarize_conversation_history(conversation_history: List[Dict[str, str]]
             """
     return generate_response(prompt, conversation_history)
 
-conversation_history = [
-    {
-        "role": "user",
-        "content": "CareBot how are you"
-    },
-    {
-        "role": "assistant",
-        "content": "I'm doing good how can I help?"
-    },
-    {
-        "role": "user",
-        "content": "I cant breathe"
-    },
-
-]
-
-print(summarize_conversation_history(conversation_history))
+# conversation_history = [
+#     {
+#         "role": "user",
+#         "content": "CareBot how are you"
+#     },
+#     {
+#         "role": "assistant",
+#         "content": "I'm doing good how can I help?"
+#     },
+#     {
+#         "role": "user",
+#         "content": "I cant breathe"
+#     },
+#
+# ]
+#
+# print(summarize_conversation_history(conversation_history))
