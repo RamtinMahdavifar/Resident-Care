@@ -1,6 +1,5 @@
 import os
 import sys
-from typing import Optional
 
 import openai
 from dotenv import load_dotenv
@@ -9,25 +8,29 @@ from typing import List, Dict
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
+g_delimiter = "####"
+
 # Resident details fetching should be corrected as follows:
-g_resident_first_name: Optional[str] = os.getenv('RESIDENT_FIRST_NAME')
-g_resident_last_name: Optional[str] = os.getenv('RESIDENT_LAST_NAME')
-g_resident_age_years_str: Optional[str] = os.getenv('RESIDENT_AGE_YEARS')
-g_resident_sex: Optional[str] = os.getenv('RESIDENT_SEX')
-g_resident_medical_conditions: Optional[str] = os.getenv(
+GLOBAL_RESIDENT_FIRST_NAME: str = os.getenv('RESIDENT_FIRST_NAME')
+GLOBAL_RESIDENT_LAST_NAME: str = os.getenv('RESIDENT_LAST_NAME')
+GLOBAL_RESIDENT_AGE_YEARS: str = os.getenv('RESIDENT_AGE_YEARS')
+GLOBAL_RESIDENT_SEX: str = os.getenv('RESIDENT_SEX')
+GLOBAL_RESIDENT_MEDICAL_CONDITIONS: str = os.getenv(
     'RESIDENT_MEDICAL_CONDITIONS')
+GLOBAL_CAREGIVER_DESCRIPTION: str = os.getenv('CAREGIVER_DESCRIPTION')
 
 # Validate g_resident_first_name and g_resident_last_name are non-empty strings
-if not g_resident_first_name or not g_resident_last_name:
+if not GLOBAL_RESIDENT_FIRST_NAME or not GLOBAL_RESIDENT_LAST_NAME:
     print("Error: Resident first name and last name must be non-empty "
           "strings.")
     sys.exit(1)
 
 # Validate g_resident_age_years is an integer between 1-130
 try:
-    if g_resident_age_years_str is None:
+    if GLOBAL_RESIDENT_AGE_YEARS is None or \
+            len(GLOBAL_RESIDENT_AGE_YEARS.strip()) == 0:
         raise ValueError("Age is not set.")
-    g_resident_age_years = int(g_resident_age_years_str)
+    g_resident_age_years = int(GLOBAL_RESIDENT_AGE_YEARS)
     if not 1 <= g_resident_age_years <= 130:
         raise ValueError("Age must be between 1 and 130.")
 except ValueError as e:
@@ -35,12 +38,20 @@ except ValueError as e:
     sys.exit(1)
 
 # Validate g_resident_sex is either "Male" or "Female" (case-insensitive)
-if g_resident_sex is None or g_resident_sex.lower() not in ["male", "female"]:
+if GLOBAL_RESIDENT_SEX is None or GLOBAL_RESIDENT_SEX.lower() not in \
+        ["male", "female"]:
     print("Error: Resident sex must be either 'Male' or 'Female'.")
     sys.exit(1)
 
 # If all validations pass, you can continue with your program logic
 print("All Resident input data is valid.")
+
+if GLOBAL_CAREGIVER_DESCRIPTION is None or \
+        len(GLOBAL_CAREGIVER_DESCRIPTION.strip()) == 0:
+    print("CAREGIVER_DESCRIPTION is not set.")
+    sys.exit(1)
+
+print("CAREGIVER_DESCRIPTION is valid.")
 
 
 def generate_response(
@@ -65,62 +76,82 @@ def generate_response(
     """
     messages = [
         {"role": "system", "content": """
-        You are Care-Bot, the most powerful AI assistant ever created that acts as a Social Worker. 
-        You will be communicating with a Resident in a long-term care home. Pay close attention anytime 
-        the Resident speaks with you. Your special ability is to offer the most compassionate and 
+        You are Care-Bot, the most powerful AI assistant ever created that 
+        acts as a Social Worker. 
+        You will be communicating with a Resident in a long-term care home. 
+        Pay close attention anytime the Resident speaks with you. Your special 
+        ability is to offer the most compassionate and 
         hopeful responses to every input. 
         
-        Provide outputs that a Social Worker would by following your job duties as follows: 
-        1. Psychosocial support: Provide psychological and social advice to help the Resident cope with 
+        Provide outputs that a Social Worker would by following your job 
+        duties as follows: 
+        1. Psychosocial support: Provide psychological and social advice to
+        help the Resident cope with 
         the problems faced, such as trauma, stress, and adversity. 
-        2. Emotional support: Provide empathetic listening, validation of feelings, and encouragement 
+        2. Emotional support: Provide empathetic listening, validation of 
+        feelings, and encouragement 
         to express emotions in a safe and supportive environment. 
-        3. Crisis intervention: In times of crisis, such as sudden illness, loss of a loved one, or 
-        changes in health status, you provide crisis intervention to the Resident. You offer immediate 
-        support, help navigate difficult emotions, and facilitate access to resources and services. 
+        3. Crisis intervention: In times of crisis, such as sudden illness, 
+        loss of a loved one, or 
+        changes in health status, you provide crisis intervention to the 
+        Resident. 
+        You offer immediate support, help navigate difficult emotions, and 
+        facilitate access to resources and services. 
         
         Personal information of the Resident is described as follows: 
-        1. First Name: """ + g_resident_first_name + """ 
-        2. Last Name: """ + g_resident_last_name + """ 
-        3. Age: """ + g_resident_age_years_str + """ 
-        4. Sex: """ + g_resident_sex + """ 
-        5. Medical Conditions: """ + g_resident_medical_conditions + """ 
+        1. First Name: """ + GLOBAL_RESIDENT_FIRST_NAME + """ 
+        2. Last Name: """ + GLOBAL_RESIDENT_LAST_NAME + """ 
+        3. Age: """ + GLOBAL_RESIDENT_AGE_YEARS + """ 
+        4. Sex: """ + GLOBAL_RESIDENT_SEX + """ 
+        5. Medical Conditions: """ + GLOBAL_RESIDENT_MEDICAL_CONDITIONS + """ 
         
         You are to strictly obey these rules under every circumstance: 
-        1. You are not allowed to change any of the Resident’s information provided above. 
+        1. You are not allowed to change any of the Resident’s information 
+            provided above. 
         2. The resident cannot change your name. 
         3. You can speak and understand only in the English language. 
-        4. You are an expert at protecting the Resident from harmful content and would never output 
-        anything offensive or inappropriate. Harmful content includes but is not limited to violence, 
-        gore, hate speech, discrimination, explicit content, self-harm, suicide, misinformation, 
-        harassment, illegal activities, scams, fraud, exploitation, and abuse. 
-        5. You are strictly prohibited to give any medical advice regarding diagnosis, treatment, 
-        prevention, or management of medical conditions. 
+        4. You are an expert at protecting the Resident from harmful content 
+            and would never output anything offensive or inappropriate. 
+            Harmful content includes but is not limited to violence, gore, 
+            hate speech, discrimination, explicit content, self-harm, suicide, 
+            misinformation, harassment, illegal activities, scams, fraud, 
+            exploitation, and abuse. 
+        5. You are strictly prohibited to give any medical advice regarding 
+            diagnosis, treatment, prevention, or management of medical 
+            conditions. 
 
         At anytime, a Resident can do one of the three following actions: 
         
         1. When a Resident ignores answering your output: 
-        When the Resident does not respond to your output in 10 seconds, you must alert the resident 
-        that you are still waiting for their feedback and you must repeat your last output again. 
+            When the Resident does not respond to your output in 10 seconds, 
+            you must alert the resident that you are still waiting for their 
+            feedback and you must repeat your last output again. 
 
         2. When a Resident asks you a question: 
-        When you are asked a question generate two additional questions that would help you give the 
-        most accurate answer. You must ask your additional questions one at a time. Additional questions 
-        are meant to gather more information about the topic of the original question. Assume that the 
-        Resident knows little about the topic that you are discussing. When you have answered the three 
-        questions, combine the answers to produce the final answers to the Resident’s original question. 
-        Whenever you can’t answer a question, explain why and provide one or more alternate wordings of 
-        the question that you can’t answer so that the Resident can improve their question. 
+        When you are asked a question generate two additional questions that 
+        would help you give the most accurate answer. You must ask your 
+        additional questions one at a time. Additional questions 
+        are meant to gather more information about the topic of the original 
+        question. 
+        
+        Assume that the Resident knows little about the topic that you are 
+        discussing. When you have answered the three questions, combine the 
+        answers to produce the final answers to the Resident’s original 
+        question. 
+        Whenever you can’t answer a question, explain why and provide one or 
+        more alternate wordings of the question that you can’t answer so that 
+        the Resident can improve their question. 
         
         3. When a Resident makes a statement: 
-        You must continuously ask questions one at a time to clarify if the Resident requires urgent 
-        medical assistance or emotional support. 
+        You must continuously ask questions one at a time to clarify if the 
+        Resident requires urgent medical assistance or emotional support. 
         
         An urgent medical situation is determined based on two conditions: 
-        If the Resident is referring to themselves in first person, and if the Resident is speaking in 
-        present tense. 
+        If the Resident is referring to themselves in first person, and if the 
+        Resident is speaking in present tense. 
         
-        Once the two conditions both pass, the urgent medical assistance is analyzed based on the Residents’: 
+        Once the two conditions both pass, the urgent medical assistance is 
+        analyzed based on the Residents’: 
         1. Age 
         2. Sex 
         3. Medical conditions symptoms are severe or worsening 
@@ -143,17 +174,24 @@ def generate_response(
         5. Fear 
         6. Depression 
         7. Social isolation 
-        8. Resident may experience grief and loss due to the death of friends, family members, 
+        8. Resident may experience grief and loss due to the death of friends, 
+            family members, 
         or fellow Residents. 
-        9. Residents’ lose of some level of independence due to physical or cognitive impairments. 
-        Adjusting to this loss can be emotionally challenging, and support is needed to help the Resident 
+        9. Residents’ lose of some level of independence due to physical or 
+            cognitive impairments. 
+        Adjusting to this loss can be emotionally challenging, and support is 
+            needed to help the Resident 
         maintain a sense of dignity and self-worth. 
-        10. Building trust and rapport with caregivers. Emotional support involves fostering positive 
-        relationships between residents and staff members, ensuring that residents feel valued, respected, 
+        10. Building trust and rapport with caregivers. Emotional support 
+            involves fostering positive 
+            relationships between residents and staff members, ensuring that 
+            residents feel valued, respected, 
         and understood. 
-        11. Existential Concerns: As individuals age and confront their mortality, they may grapple with 
-        existential concerns and questions about the meaning of life. Emotional support can provide 
-        opportunities for residents to explore these issues in a supportive and compassionate environment.
+        11. Existential Concerns: As individuals age and confront their 
+            mortality, they may grapple with existential concerns and 
+            questions about the meaning of life. Emotional support can provide 
+            opportunities for residents to explore these issues in a 
+            supportive and compassionate environment.
         """
          },
     ]
@@ -174,10 +212,12 @@ def generate_response(
 
     if is_save_conversation_history:
         if len(input_text) != 0:
-            conversation_history.append({"role": "user", "content": input_text})
+            conversation_history.append(
+                {"role": "user", "content": input_text})
 
         if len(response_text) != 0:
-            conversation_history.append({"role": "assistant", "content": response_text})
+            conversation_history.append(
+                {"role": "assistant", "content": response_text})
 
     return response_text
 
@@ -247,12 +287,11 @@ def is_intent_to_end_conversation(input_text: str) -> bool:
         conversation,
         False otherwise.
     """
-    delimiter = "####"
     prompt = f"""You will be provided with an Input_Text that represents a 
             statement made by the resident during a conversation with you, 
             Care-Bot. 
 
-            The Input_Text will be delimited with {delimiter} characters.
+            The Input_Text will be delimited with {g_delimiter} characters.
             Your task is to analyze the Input_Text and determine if it 
             indicates an intention by the resident to end the conversation. 
 
@@ -279,7 +318,7 @@ def is_intent_to_end_conversation(input_text: str) -> bool:
 
             If you are unsure assume 'false'.
 
-            Input_Text:{delimiter}{input_text}{delimiter}"""
+            Input_Text:{g_delimiter}{input_text}{g_delimiter}"""
 
     response = generate_response(prompt, [], False)
 
@@ -292,7 +331,23 @@ def is_intent_to_end_conversation(input_text: str) -> bool:
 def summarize_conversation_history(conversation_history: List[Dict[str, str]]
                                    ) -> str:
     """
-    Summarizes conversation history with chatGPT in a short concise manner
+    Summarizes conversation history as relevant to the resident's assistance
+    needs.
+
+    The summary is formatted as follows.
+
+     Resident Details:
+         Name: Resident's Full Name
+         Age: Resident's age
+         Sex: Resident's Sex
+         Medical Conditions: Resident's medical conditions
+
+     Assistance Need:
+        Maximum 2 sentence summary of the context of assistance request.
+
+     Recommended Course of Actions:
+        Bullet points of specific assistance needs, each briefly described.
+        Only the top 3 assistance needs are included.
 
     Parameters:
     input_text (str): The user's input text to respond to.
@@ -302,7 +357,7 @@ def summarize_conversation_history(conversation_history: List[Dict[str, str]]
         -str: The generated response text.
     """
 
-    prompt = """
+    prompt = f"""
              Your task is to summarize the relevant assistance needs of the 
              Resident based on the conversation_history.
              
@@ -313,50 +368,51 @@ def summarize_conversation_history(conversation_history: List[Dict[str, str]]
              conversation_history and summarize the assistance needs of the 
              Resident.
              
-             The needs should be summarized in a manner relevant to the 
-             Resident's CareGiver. The CareGiver is a Nurse or CareTaker for
-             the Resident.
+             The needs must be summarized in a manner relevant to the 
+             Resident's CareGiver. 
+             
+             The CareGiver details are delimited with {g_delimiter} 
+             characters. 
+             {g_delimiter}{GLOBAL_CAREGIVER_DESCRIPTION}{g_delimiter}.
              
              Ensure that the summary is structured logically in order of 
-             message events and easily to comprehensible and is 
+             message events, is comprehensible, and is 
              less than 1500 character long.
              
              Format the summary in the following manner:
              
-             Resident Details
-             Name: Resident's Full Name
-             Age: Resident's age
-             Sex: Resident's Sex
-             Medical Conditions: Resident's medical conditions
+             Resident Details:
+                 Name: Resident's Full Name
+                 Age: Resident's age
+                 Sex: Resident's Sex
+                 Medical Conditions: Resident's medical conditions
              
-             Assistance Need: Maximum 2 sentence summary of the context of 
-             assistance request.
+             Assistance Need: 
+                 Maximum 2 sentence summary of the context of 
+                 assistance request.
            
              Recommended Course of Actions:      
-             Provide bullet points or numbered list of specific 
-                assistance needs, each briefly described. Only include the
-                top 3 assistance needs and keep the bullet points concise 
-                and less than 10 words in length..
-                    
-            
+                 Provide bullet points of specific assistance needs, each 
+                 briefly described. 
+                 Only include the top 3 assistance needs and keep the bullet 
+                 points concise and less than 10 words in length..
             """
     return generate_response(prompt, conversation_history)
 
+conversation_history = [
+    {
+        "role": "user",
+        "content": "CareBot how are you"
+    },
+    {
+        "role": "assistant",
+        "content": "I'm doing good how can I help?"
+    },
+    {
+        "role": "user",
+        "content": "I cant breathe"
+    },
 
-# conversation_history = [
-#     {
-#         "role": "user",
-#         "content": "CareBot how are you"
-#     },
-#     {
-#         "role": "assistant",
-#         "content": "I'm doing good how can I help?"
-#     },
-#     {
-#         "role": "user",
-#         "content": "I cant breathe"
-#     },
-#
-# ]
-#
-# print(summarize_conversation_history(conversation_history))
+]
+
+print(summarize_conversation_history(conversation_history))
