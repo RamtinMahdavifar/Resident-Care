@@ -51,4 +51,3 @@ def test_is_intent_to_end_conversation():
            is True
     assert (is_intent_to_end_conversation("Let's wrap things up for now")) \
            is True
-

@@ -6,7 +6,8 @@ import traceback
 import streamlit as st
 from typing import List, Dict
 
-from chatgpt_prompts import generate_response, summarize_conversation_history, \
+from chatgpt_prompts import generate_response, \
+    summarize_conversation_history, \
     is_urgent_assistance_needed, is_intent_to_end_conversation
 
 from sms_twilio import send_mms
@@ -37,7 +38,8 @@ def alert_assistance_request_sent() -> None:
     process_and_play_response(response_text)
 
     # Summarising conversation and sending SMS to resident
-    summarized_conversation = summarize_conversation_history(g_conversation_history)
+    summarized_conversation = summarize_conversation_history(
+        g_conversation_history)
 
     print("Summarized Conversation sent to caregiver:\n" +
           summarized_conversation + "\n")

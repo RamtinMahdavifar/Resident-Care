@@ -75,9 +75,8 @@ def generate_response(
         - str: The generated response text.
     """
     messages = [
-        {"role": "system", "content": f"""
-        You are Care-Bot, the most powerful AI assistant ever created that 
-        acts as a Social Worker. 
+        {"role": "system", "content": f"""You are Care-Bot, the most powerful 
+        AI assistant ever created that acts as a Social Worker. 
         You will be communicating with a Resident in a long-term care home. 
         Pay close attention anytime the Resident speaks with you. Your special 
         ability is to offer the most compassionate and 
@@ -412,21 +411,3 @@ def summarize_conversation_history(conversation_history: List[Dict[str, str]]
                  points concise and less than 10 words in length..
             """
     return generate_response(prompt, conversation_history)
-
-# conversation_history = [
-#     {
-#         "role": "user",
-#         "content": "CareBot how are you"
-#     },
-#     {
-#         "role": "assistant",
-#         "content": "I'm doing good how can I help?"
-#     },
-#     {
-#         "role": "user",
-#         "content": "I cant breathe"
-#     },
-#
-# ]
-#
-# print(summarize_conversation_history(conversation_history))
