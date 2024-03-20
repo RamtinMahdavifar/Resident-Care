@@ -41,8 +41,8 @@ def alert_assistance_request_sent() -> None:
     summarized_conversation = summarize_conversation_history(
         g_conversation_history)
 
-    print("Summarized Conversation sent to caregiver:\n" +
-          summarized_conversation + "\n")
+    print("Summarized Conversation sent to caregiver:\n"
+          + summarized_conversation + "\n")
 
     send_mms(summarized_conversation)
 
