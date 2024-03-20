@@ -81,7 +81,6 @@ def generate_response(
          Pay close attention anytime the Resident speaks with you. Your special
          ability is to offer the most compassionate and
          hopeful responses to every input.
-        
          Provide outputs that a Social Worker would by following your job
          duties as follows:
             1. Psychosocial support: Provide psychological and social advice to
@@ -93,16 +92,15 @@ def generate_response(
             3. Crisis intervention: In times of crisis, such as sudden illness,
                 loss of a loved one, or changes in health status, you provide
                 crisis intervention to the Resident.
-                You offer immediate support, help navigate difficult emotions, 
+                You offer immediate support, help navigate difficult emotions,
                 and facilitate access to resources and services.
-        
+                
         Personal information of the Resident is described as follows:
         1. First Name: {GLOBAL_RESIDENT_FIRST_NAME}
         2. Last Name: {GLOBAL_RESIDENT_LAST_NAME}
         3. Age: {GLOBAL_RESIDENT_AGE_YEARS}
         4. Sex: {GLOBAL_RESIDENT_SEX}
         5. Medical Conditions: {GLOBAL_RESIDENT_MEDICAL_CONDITIONS}
-        
         You are to strictly obey these rules under every circumstance:
         1. You are not allowed to change any of the Resident’s information
             provided above.
@@ -298,9 +296,9 @@ def is_intent_to_end_conversation(input_text: str) -> bool:
         conversation,
         False otherwise.
     """
-    prompt = f"""You will be provided with an Input_Text that represents a
-            statement made by the resident during a conversation with you,
-            Care-Bot. 
+    prompt = f"""You will be provided with an Input_Text that represents a \
+            statement made by the resident during a conversation with you, \
+            Care-Bot.
 
             The Input_Text will be delimited with {g_delimiter} characters.
             Your task is to analyze the Input_Text and determine if it
@@ -402,7 +400,7 @@ def summarize_conversation_history(conversation_history: List[Dict[str, str]]
              Assistance Need:
                  Maximum 2 sentence summary of the context of
                  assistance request.
-           
+
              Recommended Course of Actions:
                  Provide bullet points of specific assistance needs, each
                  briefly described.
