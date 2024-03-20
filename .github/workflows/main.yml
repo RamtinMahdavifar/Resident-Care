@@ -46,7 +46,7 @@ jobs:
 
       - name: Run Flake8 # ignore blank line errors
         run: |
-          flake8 --ignore=W293 .
+          flake8 --ignore=W293,W503 .
 
       - name: Run MyPy
         run: |
