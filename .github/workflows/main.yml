@@ -40,6 +40,7 @@ jobs:
           echo "RESIDENT_LAST_NAME=${{ secrets.RESIDENT_LAST_NAME }}" >> .env
           echo "RESIDENT_AGE_YEARS=${{ secrets.RESIDENT_AGE_YEARS }}" >> .env
           echo "RESIDENT_SEX=${{ secrets.RESIDENT_SEX }}" >> .env
+          
           echo "RESIDENT_MEDICAL_CONDITIONS=${{ secrets.RESIDENT_MEDICAL_CONDITIONS }}" >> .env
           echo "CAREGIVER_DESCRIPTION=${{ secrets.CAREGIVER_DESCRIPTION }}" >> .env
 
