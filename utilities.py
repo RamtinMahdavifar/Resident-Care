@@ -22,8 +22,8 @@ def beep(frequency: int, duration: int) -> None:
 
     channels = 2  # Number of audio channels
     bits_per_sample = 16  # Number of bits per audio sample
-    max_sample_value = 2 ** (
-            bits_per_sample - 1) - 1  # Maximum value for a sample
+    # Maximum value for a sample
+    max_sample_value = 2 ** (bits_per_sample - 1) - 1
 
     # Generate a sound buffer with the given frequency
     n_samples = int(round(duration * sample_rate / milliseconds_to_seconds))
