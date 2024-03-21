@@ -44,6 +44,10 @@ jobs:
           echo "RESIDENT_MEDICAL_CONDITIONS=${{ secrets.RESIDENT_MEDICAL_CONDITIONS }}" >> .env
 
           echo "CAREGIVER_DESCRIPTION=${{ secrets.CAREGIVER_DESCRIPTION }}" >> .env
+          echo "CAREGIVER_DESCRIPTION value: ${{ secrets.CAREGIVER_DESCRIPTION }}"
+          echo "CAREGIVER_DESCRIPTION=${{ secrets.CAREGIVER_DESCRIPTION }}" >> .env || echo "Failed to write CAREGIVER_DESCRIPTION to .env"
+          
+          
           echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
 
       - name: Run Flake8

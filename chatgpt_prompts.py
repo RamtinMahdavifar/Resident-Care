@@ -49,8 +49,6 @@ print("All Resident input data is valid.")
 
 if GLOBAL_CAREGIVER_DESCRIPTION is None:
     print("CAREGIVER_DESCRIPTION is not set.")
-    print(os.getenv(
-        'CAREGIVER_DESCRIPTION'))
     sys.exit(1)
 
 print("CAREGIVER_DESCRIPTION is valid.")
