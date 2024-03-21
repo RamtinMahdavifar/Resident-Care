@@ -46,7 +46,7 @@ jobs:
 
       - name: Run Flake8
         run: |
-          flake8 .
+          flake8 --ignore=W293,W503 .
 
       - name: Run MyPy
         run: |
