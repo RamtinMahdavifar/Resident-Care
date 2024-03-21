@@ -17,8 +17,8 @@ GLOBAL_RESIDENT_AGE_YEARS: Optional[str] = os.getenv('RESIDENT_AGE_YEARS')
 GLOBAL_RESIDENT_SEX: Optional[str] = os.getenv('RESIDENT_SEX')
 GLOBAL_RESIDENT_MEDICAL_CONDITIONS: Optional[str] = os.getenv(
     'RESIDENT_MEDICAL_CONDITIONS')
-GLOBAL_CAREGIVER_DESCRIPTION: Optional[str] = os.getenv(
-    'CAREGIVER_DESCRIPTION')
+GLOBAL_CAREGIVER_DESCRIPTION: Optional[str] = \
+    os.getenv('CAREGIVER_DESCRIPTION')
 
 # Validate g_resident_first_name and g_resident_last_name are non-empty strings
 if not GLOBAL_RESIDENT_FIRST_NAME or not GLOBAL_RESIDENT_LAST_NAME:
@@ -43,6 +43,15 @@ if GLOBAL_RESIDENT_SEX is None or GLOBAL_RESIDENT_SEX.lower() not in \
         ["male", "female"]:
     print("Error: Resident sex must be either 'Male' or 'Female'.")
     sys.exit(1)
+
+# If all validations pass, you can continue with your program logic
+print("All Resident input data is valid.")
+
+if GLOBAL_CAREGIVER_DESCRIPTION is None:
+    print("CAREGIVER_DESCRIPTION is not set.")
+    sys.exit(1)
+
+print("CAREGIVER_DESCRIPTION is valid.")
 
 
 def generate_response(
