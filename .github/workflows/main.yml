@@ -42,7 +42,7 @@ jobs:
           echo "RESIDENT_SEX=${{ secrets.RESIDENT_SEX }}" >> .env
           
           echo "RESIDENT_MEDICAL_CONDITIONS=${{ secrets.RESIDENT_MEDICAL_CONDITIONS }}" >> .env
-          echo "CAREGIVER_DESCRIPTION=${{ secrets.CAREGIVER_DESCRIPTION }}" >> .env
+          echo "CAREGIVER_DESCRIPTION=${{ secrets.RESIDENT_MEDICAL_CONDITIONS }}" >> .env
 
           echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
 
