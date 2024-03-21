@@ -41,12 +41,12 @@ jobs:
           echo "RESIDENT_AGE_YEARS=${{ secrets.RESIDENT_AGE_YEARS }}" >> .env
           echo "RESIDENT_SEX=${{ secrets.RESIDENT_SEX }}" >> .env
           echo "RESIDENT_MEDICAL_CONDITIONS=${{ secrets.RESIDENT_MEDICAL_CONDITIONS }}" >> .env
-       
+
           echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
 
-      - name: Run Flake8 # ignore blank line errors
+      - name: Run Flake8
         run: |
-          flake8 --ignore=W293,W503 .
+          flake8 .
 
       - name: Run MyPy
         run: |
