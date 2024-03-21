@@ -44,30 +44,38 @@ jobs:
 
           echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
 
-#      - name: Run Flake8
-#        run: |
-#          flake8 --ignore=W293,W503 .
-#
-#      - name: Run MyPy
-#        run: |
-#          mypy --ignore-missing-imports .
+      - name: Run Flake8
+        run: |
+          flake8 --ignore=W293,W503 .
 
-#      - name: Automatically fix import order with isort
-#        run: |
-#          isort .
-#
-#      - name: Commit and push if changes
-#        run: |
-#          git config --local user.email "action@github.com"
-#          git config --local user.name "GitHub Action"
-#          git add -A
-#          git commit -m "Automatically fix Python import order" || echo "No changes to commit"
-#          git push origin main || echo "No changes to push"
+      - name: Run MyPy
+        run: |
+          mypy --ignore-missing-imports .
+
+      - name: Automatically fix import order with isort
+        run: |
+          isort .
+
+      - name: Commit and push if changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git commit -m "Automatically fix Python import order" || echo "No changes to commit"
+          git push origin main || echo "No changes to push"
 
       - name: Run smoke tests
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
+          echo "CAREGIVER_PHONE_NUMBER=${{ secrets.CAREGIVER_PHONE_NUMBER }}" >> .env
+          echo "CAREGIVER_DESCRIPTION=${{ secrets.CAREGIVER_DESCRIPTION }}" >> .env
+          echo "RESIDENT_FIRST_NAME=${{ secrets.RESIDENT_FIRST_NAME }}" >> .env
+          echo "RESIDENT_LAST_NAME=${{ secrets.RESIDENT_LAST_NAME }}" >> .env
+          echo "RESIDENT_AGE_YEARS=${{ secrets.RESIDENT_AGE_YEARS }}" >> .env
+          echo "RESIDENT_SEX=${{ secrets.RESIDENT_SEX }}" >> .env
+          echo "RESIDENT_MEDICAL_CONDITIONS=${{ secrets.RESIDENT_MEDICAL_CONDITIONS }}" >> .env
+          
           cd tests/smoke_tests
           pytest test_smoke.py
 
