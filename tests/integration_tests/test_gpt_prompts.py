@@ -17,6 +17,7 @@ def test_is_urgent_assistance_needed():
     assert (is_urgent_assistance_needed("I need my medication now")) is True
     assert (is_urgent_assistance_needed("Ahh my chest hurts and I can't breath"
                                         )) is True
+    # add tests here that fail but comment out
 
 
 def test_is_intent_to_end_conversation():
@@ -51,3 +52,5 @@ def test_is_intent_to_end_conversation():
            is True
     assert (is_intent_to_end_conversation("Let's wrap things up for now")) \
            is True
+
+    # add tests here that fail but comment out
