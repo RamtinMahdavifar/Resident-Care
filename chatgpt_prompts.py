@@ -3,7 +3,7 @@ import sys
 
 import openai
 from dotenv import load_dotenv
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -11,13 +11,13 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 g_delimiter = "####"
 
 # Resident details fetching should be corrected as follows:
-GLOBAL_RESIDENT_FIRST_NAME: str = os.getenv('RESIDENT_FIRST_NAME')
-GLOBAL_RESIDENT_LAST_NAME: str = os.getenv('RESIDENT_LAST_NAME')
-GLOBAL_RESIDENT_AGE_YEARS: str = os.getenv('RESIDENT_AGE_YEARS')
-GLOBAL_RESIDENT_SEX: str = os.getenv('RESIDENT_SEX')
-GLOBAL_RESIDENT_MEDICAL_CONDITIONS: str = os.getenv(
+GLOBAL_RESIDENT_FIRST_NAME: Optional[str] = os.getenv('RESIDENT_FIRST_NAME')
+GLOBAL_RESIDENT_LAST_NAME: Optional[str] = os.getenv('RESIDENT_LAST_NAME')
+GLOBAL_RESIDENT_AGE_YEARS: Optional[str] = os.getenv('RESIDENT_AGE_YEARS')
+GLOBAL_RESIDENT_SEX: Optional[str] = os.getenv('RESIDENT_SEX')
+GLOBAL_RESIDENT_MEDICAL_CONDITIONS: Optional[str] = os.getenv(
     'RESIDENT_MEDICAL_CONDITIONS')
-GLOBAL_CAREGIVER_DESCRIPTION: str = os.getenv('CAREGIVER_DESCRIPTION')
+GLOBAL_CAREGIVER_DESCRIPTION: Optional[str] = os.getenv('CAREGIVER_DESCRIPTION')
 
 # Validate g_resident_first_name and g_resident_last_name are non-empty strings
 if not GLOBAL_RESIDENT_FIRST_NAME or not GLOBAL_RESIDENT_LAST_NAME:
