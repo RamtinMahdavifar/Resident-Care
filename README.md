@@ -78,7 +78,14 @@ RESIDENT_AGE_YEARS=85
 RESIDENT_SEX='male'
 RESIDENT_MEDICAL_CONDITIONS='mild dementia, mobility issues.'
 
-These details will be used to tailor the interaction and alerts for the resident's specific needs and conditions.
+# CareGiver Details
+Ensure that this is not empty.
+
+CAREGIVER_DESCRIPTION='The role of the Caregiver'
+
+For example:
+
+CAREGIVER_DESCRIPTION='Is a nurse in charge of taking care of the patient.'
 
 ```
 
