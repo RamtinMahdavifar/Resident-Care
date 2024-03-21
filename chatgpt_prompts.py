@@ -44,15 +44,6 @@ if GLOBAL_RESIDENT_SEX is None or GLOBAL_RESIDENT_SEX.lower() not in \
     print("Error: Resident sex must be either 'Male' or 'Female'.")
     sys.exit(1)
 
-# If all validations pass, you can continue with your program logic
-print("All Resident input data is valid.")
-
-if GLOBAL_CAREGIVER_DESCRIPTION is None:
-    print("CAREGIVER_DESCRIPTION is not set.")
-    sys.exit(1)
-
-print("CAREGIVER_DESCRIPTION is valid.")
-
 
 def generate_response(
         input_text: str,
