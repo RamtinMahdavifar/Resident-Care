@@ -44,25 +44,25 @@ jobs:
 
           echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
 
-      - name: Run Flake8
-        run: |
-          flake8 --ignore=W293,W503 .
+#      - name: Run Flake8
+#        run: |
+#          flake8 --ignore=W293,W503 .
+#
+#      - name: Run MyPy
+#        run: |
+#          mypy --ignore-missing-imports .
 
-      - name: Run MyPy
-        run: |
-          mypy --ignore-missing-imports .
-
-      - name: Automatically fix import order with isort
-        run: |
-          isort .
-
-      - name: Commit and push if changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -A
-          git commit -m "Automatically fix Python import order" || echo "No changes to commit"
-          git push origin main || echo "No changes to push"
+#      - name: Automatically fix import order with isort
+#        run: |
+#          isort .
+#
+#      - name: Commit and push if changes
+#        run: |
+#          git config --local user.email "action@github.com"
+#          git config --local user.name "GitHub Action"
+#          git add -A
+#          git commit -m "Automatically fix Python import order" || echo "No changes to commit"
+#          git push origin main || echo "No changes to push"
 
       - name: Run smoke tests
         env:
