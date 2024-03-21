@@ -47,8 +47,7 @@ if GLOBAL_RESIDENT_SEX is None or GLOBAL_RESIDENT_SEX.lower() not in \
 # If all validations pass, you can continue with your program logic
 print("All Resident input data is valid.")
 
-if GLOBAL_CAREGIVER_DESCRIPTION is None or \
-        len(GLOBAL_CAREGIVER_DESCRIPTION.strip()) == 0:
+if GLOBAL_CAREGIVER_DESCRIPTION is None:
     print("CAREGIVER_DESCRIPTION is not set.")
     sys.exit(1)
 
