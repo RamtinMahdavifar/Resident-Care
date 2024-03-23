@@ -32,7 +32,7 @@ class CareBotController:
 
         response_text = "It seems you require assistance. Your request for " \
                         "assistance has been sent to your caregiver."
-        print("CareBot AI Response:\n")
+        print("CareBot AI Response:\n" + response_text)
 
         self.get_view().display_streamlit_message(response_text, False)
         self.get_model().process_and_play_response(response_text)
@@ -42,8 +42,11 @@ class CareBotController:
         ).summarize_conversation_history(
             self.get_conversation_history())
 
-        print("Summarized Conversation sent to caregiver:\n"
-              + summarized_conversation + "\n")
+        summary = "Summarized Conversation sent to caregiver:\n"+ \
+                  summarized_conversation + "\n"
+
+        print(summary)
+        self.get_view().display_streamlit_message(summary, False)
 
         self.get_model().send_mms(summarized_conversation)
 
@@ -72,7 +75,7 @@ class CareBotController:
             response_text = self.get_model().generate_response(
                 input_text, self.get_conversation_history())
 
-            print("CareBot AI Response:\n")
+            print("CareBot AI Response:\n" + response_text)
             self.get_view().display_streamlit_message(response_text, False)
             self.get_model().process_and_play_response(response_text)
 
@@ -100,6 +103,8 @@ class CareBotController:
                         "Feel free to chat with me anytime using my name " \
                         "Care-Bot. " \
                         "Goodbye for now.\n"
+
+        print("CareBot AI Response:\n" + response_text)
         self.get_view().display_streamlit_message(response_text, False)
         self.get_model().process_and_play_response(response_text)
 
@@ -137,3 +142,11 @@ class CareBotController:
             # Restart the script when not running in Streamlit UI mode
             print(message)
             os.execv(sys.executable, ['python'] + sys.argv)
+
+    # def display_message(self, is_display_console_only: bool, message_text: str,
+    #                     is_user: bool = True):
+    #
+    #     if is_display_console_only:
+    #         print(message_text)
+    #     else:
+    #         self.get_view().display_streamlit_message(message_text, is_user)

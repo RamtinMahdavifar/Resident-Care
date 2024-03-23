@@ -65,7 +65,6 @@ def transcribe_audio_callback(text: str) -> bool:
     Returns:
     bool: False, indicating to stop processing.
     """
-    print(text)  # or handle the text as needed
     return False  # Stop after the first transcription
 
 

@@ -1,6 +1,8 @@
 import numpy as np
 import pygame
-import os
+import os, sys
+
+from contextlib import contextmanager
 
 # Initialize the mixer module for audio playback
 pygame.mixer.init()
@@ -54,3 +56,14 @@ def remove_temp_files(file_path: str) -> None:
     file_path (str): The path to the file to remove.
     """
     os.remove(file_path)
+
+
+@contextmanager
+def suppress_stdout():
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        sys.stdout = devnull
+        try:
+            yield
+        finally:
+            sys.stdout = old_stdout
