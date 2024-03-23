@@ -1,7 +1,7 @@
 import openai
 import pytest
 
-from chatgpt_prompts import is_urgent_assistance_needed, \
+from Model.chatgpt_prompts import is_urgent_assistance_needed, \
     is_intent_to_end_conversation
 
 

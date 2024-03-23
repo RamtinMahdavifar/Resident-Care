@@ -1,8 +1,8 @@
 import openai
 import pytest
 
-from chatgpt_prompts import generate_response
-from sms_twilio import send_mms
+from Model.chatgpt_prompts import generate_response
+from Model.sms_twilio import send_mms
 
 
 @pytest.mark.smoke

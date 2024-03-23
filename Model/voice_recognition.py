@@ -3,7 +3,7 @@ import json
 import os
 from typing import Callable
 from vosk import KaldiRecognizer, Model
-from keyword_recognition import has_keyword
+from Model.keyword_recognition import has_keyword
 
 # Constants for audio settings
 FORMAT = pyaudio.paInt16
