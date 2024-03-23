@@ -1,3 +1,5 @@
+import os
+import sys
 from typing import List, Dict
 
 
@@ -118,3 +120,20 @@ class CareBotController:
     def clear_conversation_history(self):
         self.get_conversation_history().clear()
         self.get_view().clear_streamlit_messages()
+
+    def restart_system(self, error_message, traceback_message):
+        print("An error occurred:", error_message)
+        print("Full traceback:", traceback_message)
+
+        message = "Care-Bot is restarting due to a fatal error.\n"
+
+        # Display the error message in the UI if running in Streamlit,
+        # otherwise print to console
+        if self.get_view().is_ui:
+            self.get_view().display_streamlit_message(message, False)
+            self.get_model().process_and_play_response(message)
+            self.get_view().clear_streamlit()
+        else:
+            # Restart the script when not running in Streamlit UI mode
+            print(message)
+            os.execv(sys.executable, ['python'] + sys.argv)
