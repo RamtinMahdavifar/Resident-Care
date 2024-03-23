@@ -23,7 +23,7 @@ class CareBotController:
                         "assistance has been sent to your caregiver."
         print("CareBot AI Response:\n")
 
-        self.model.display_streamlit_message(response_text, False)
+        self.view.display_streamlit_message(response_text, False)
         self.model.process_and_play_response(response_text)
 
         # Summarising conversation and sending SMS to resident
@@ -67,7 +67,7 @@ class CareBotController:
                 break
 
             elif self.model.is_urgent_assistance_needed(input_text):
-                self.model.alert_assistance_request_sent()
+                self.alert_assistance_request_sent()
                 break
 
     def say_goodbye(self) -> None:
@@ -81,3 +81,12 @@ class CareBotController:
                         "Goodbye for now.\n"
         self.view.display_streamlit_message(response_text, False)
         self.model.process_and_play_response(response_text)
+
+    def alert_ready(self) -> None:
+        """
+        Alerts the user that Care-Bot is ready and listening.
+        """
+        message_ready = "\nCare-Bot is ready and is listening.\n"
+        print(message_ready)
+        self.model.process_and_play_response(message_ready)
+        self.model.beep(800, 200)

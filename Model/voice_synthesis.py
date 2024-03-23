@@ -2,7 +2,7 @@ import os
 import pygame
 from TTS.api import TTS
 
-from utilities import remove_temp_files
+from Model.utilities import remove_temp_files
 
 tts_model_name = os.getenv('TTS_MODEL_NAME')
 tts = TTS(model_name=tts_model_name)
