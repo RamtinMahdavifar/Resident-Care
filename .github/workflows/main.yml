@@ -46,7 +46,7 @@ jobs:
            RESIDENT_SEX=${{ secrets.RESIDENT_SEX }}
            RESIDENT_MEDICAL_CONDITIONS=${{ secrets.RESIDENT_MEDICAL_CONDITIONS }}
       
-           CAREGIVER_DESCRIPTION=${{ secrets.RESIDENT_SEX }}
+           CAREGIVER_DESCRIPTION=${{ secrets.CAREGIVERS_DESCRIPTION }}
            PYTHONPATH=${{ github.workspace }}
            EOF
 
