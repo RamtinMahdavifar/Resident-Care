@@ -39,14 +39,16 @@ jobs:
 
       - name: Set up environment variables Resident and CareGiver
         run: |
-          echo "RESIDENT_FIRST_NAME=${{ secrets.RESIDENT_FIRST_NAME }}" >> .env
-          echo "RESIDENT_LAST_NAME=${{ secrets.RESIDENT_LAST_NAME }}" >> .env
-          echo "RESIDENT_AGE_YEARS=${{ secrets.RESIDENT_AGE_YEARS }}" >> .env
-          echo "RESIDENT_SEX=${{ secrets.RESIDENT_SEX }}" >> .env
-          echo "RESIDENT_MEDICAL_CONDITIONS=${{ secrets.RESIDENT_MEDICAL_CONDITIONS }}" >> .env
-
-          echo "CAREGIVER_DESCRIPTION=${{ secrets.CAREGIVER_DESCRIPTION }}" >> .env
-          echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
+           cat << EOF >> .env
+           RESIDENT_FIRST_NAME=${{ secrets.RESIDENT_FIRST_NAME }}
+           RESIDENT_LAST_NAME=${{ secrets.RESIDENT_LAST_NAME }}
+           RESIDENT_AGE_YEARS=${{ secrets.RESIDENT_AGE_YEARS }}
+           RESIDENT_SEX=${{ secrets.RESIDENT_SEX }}
+           RESIDENT_MEDICAL_CONDITIONS=${{ secrets.RESIDENT_MEDICAL_CONDITIONS }}
+      
+           CAREGIVER_DESCRIPTION=${{ secrets.CAREGIVER_DESCRIPTION }}
+           PYTHONPATH=${{ github.workspace }}
+           EOF
 
       - name: Run Flake8
         run: |
