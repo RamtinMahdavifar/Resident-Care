@@ -390,7 +390,7 @@ def summarize_conversation_history(conversation_history: List[Dict[str, str]]
              The last element of the conversation_history list indicates the
              Resident's requirement for assistance.
              
-             Based on the last element filter our irrelevant elements in the
+             Based on the last element filter out irrelevant elements in the
              conversation_history and summarize the assistance needs of the
              Resident.
              
