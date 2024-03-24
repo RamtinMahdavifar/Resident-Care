@@ -61,6 +61,23 @@ def remove_temp_files(file_path: str) -> None:
 
 @contextmanager
 def suppress_stdout():
+    """
+    A context manager to suppress the standard output (stdout).
+
+    Usage:
+        with suppress_stdout():
+            # Code block where stdout will be suppressed
+            ...
+
+    This context manager temporarily redirects stdout to /dev/null,
+    effectively suppressing any output printed to stdout within the
+    enclosed code block. After the code block execution, stdout is
+    restored to its original state.
+
+    Example:
+        with suppress_stdout():
+            print("This will not be printed")
+    """
     with open(os.devnull, "w") as devnull:
         old_stdout = sys.stdout
         sys.stdout = devnull
