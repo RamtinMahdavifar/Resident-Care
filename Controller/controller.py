@@ -2,7 +2,7 @@ import os
 import sys
 from typing import List, Dict
 
-from Models.model import CareBotModel
+from Models.CareBotModel import CareBotModel
 from View.view import CareBotView
 
 
@@ -253,10 +253,11 @@ class CareBotController:
         It clears the conversation history and alerts the system if keywords
         are being listened for.
         """
-        self.get_model().beep(800, 200)
         if is_listen_keywords:
             self.clear_conversation_history()
             self.alert_ready()
+            self.get_model().beep(800, 200)
             return self.get_model().listen_for_keywords()
         else:
+            self.get_model().beep(800, 200)
             return self.get_model().transcribe_audio()
