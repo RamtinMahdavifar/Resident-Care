@@ -1,6 +1,6 @@
 import traceback
 
-from Models.CareBotModel import CareBotModel
+from Models.model import CareBotModel
 from View.view import CareBotView
 from Controller.controller import CareBotController
 

@@ -54,7 +54,7 @@ jobs:
 
       - name: Run MyPy
         run: |
-          mypy --ignore-missing-imports .
+          mypy --ignore-missing-imports --no-namespace-packages .
 
       - name: Automatically fix import order with isort
         run: |
