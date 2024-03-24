@@ -3,7 +3,7 @@ import json
 import os
 from typing import Callable
 from vosk import KaldiRecognizer, Model
-from keyword_recognition import has_keyword
+from Models.keyword_recognition import has_keyword
 
 # Constants for audio settings
 FORMAT = pyaudio.paInt16
@@ -65,7 +65,6 @@ def transcribe_audio_callback(text: str) -> bool:
     Returns:
     bool: False, indicating to stop processing.
     """
-    print(text)  # or handle the text as needed
     return False  # Stop after the first transcription
 
 

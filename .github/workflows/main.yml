@@ -28,7 +28,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8 mypy isort python-dotenv pytest openai==0.28.0 twilio==8.11.0
 
-      - name: Set up environment variables
+      - name: Set up environment variables for API's
         run: |
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
           echo "ACCOUNT_SID=${{ secrets.ACCOUNT_SID }}" >> .env
@@ -36,15 +36,19 @@ jobs:
           echo "TWILIO_PHONE_NUMBER=${{ secrets.TWILIO_PHONE_NUMBER }}" >> .env
           
           echo "CAREGIVER_PHONE_NUMBER=${{ secrets.CAREGIVER_PHONE_NUMBER }}" >> .env
-          
-          echo "RESIDENT_FIRST_NAME=${{ secrets.RESIDENT_FIRST_NAME }}" >> .env
-          echo "RESIDENT_LAST_NAME=${{ secrets.RESIDENT_LAST_NAME }}" >> .env
-          echo "RESIDENT_AGE_YEARS=${{ secrets.RESIDENT_AGE_YEARS }}" >> .env
-          echo "RESIDENT_SEX=${{ secrets.RESIDENT_SEX }}" >> .env
-          echo "RESIDENT_MEDICAL_CONDITIONS=${{ secrets.RESIDENT_MEDICAL_CONDITIONS }}" >> .env
 
-          echo "CAREGIVER_DESCRIPTION=${{ secrets.CAREGIVER_DESCRIPTION }}" >> .env
-          echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
+      - name: Set up environment variables Resident and CareGiver
+        run: |
+           cat << EOF >> .env
+           RESIDENT_FIRST_NAME=${{ secrets.RESIDENT_FIRST_NAME }}
+           RESIDENT_LAST_NAME=${{ secrets.RESIDENT_LAST_NAME }}
+           RESIDENT_AGE_YEARS=${{ secrets.RESIDENT_AGE_YEARS }}
+           RESIDENT_SEX=${{ secrets.RESIDENT_SEX }}
+           RESIDENT_MEDICAL_CONDITIONS=${{ secrets.RESIDENT_MEDICAL_CONDITIONS }}
+      
+           CAREGIVERS_DESCRIPTION=${{ secrets.CAREGIVERS_DESCRIPTION }}
+           PYTHONPATH=${{ github.workspace }}
+           EOF
 
       - name: Run Flake8
         run: |
@@ -52,7 +56,7 @@ jobs:
 
       - name: Run MyPy
         run: |
-          mypy --ignore-missing-imports .
+          mypy --ignore-missing-imports --no-namespace-packages .
 
       - name: Automatically fix import order with isort
         run: |
