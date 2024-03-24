@@ -1,6 +1,7 @@
 import textwrap
 import streamlit as st
 
+
 class CareBotView:
 
     def __init__(self):
