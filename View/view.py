@@ -32,11 +32,11 @@ class CareBotView:
             <hr style='border: none; border-top: 1px solid #ccc; margin:
              20px 0px;'>
             <p style='text-align: center; font-size: 16px;'>
-                Hi there! I'm <strong>Care-Bot</strong>, your personal 
+                Hi there! I'm <strong>Care-Bot</strong>, your personal
                 assistant 🤖.
             </p>
             <p style='text-align: center; font-size: 16px;'>
-                I'm here to help you by listening for keywords and situations 
+                I'm here to help you by listening for keywords and situations
                 where you may require assistance.
             </p>
             <p style='text-align: center; font-size: 16px;'>

@@ -1,8 +1,9 @@
+import os
+import sys
+from contextlib import contextmanager
+
 import numpy as np
 import pygame
-import os, sys
-
-from contextlib import contextmanager
 
 # Initialize the mixer module for audio playback
 pygame.mixer.init()
