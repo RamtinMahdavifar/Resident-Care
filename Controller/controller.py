@@ -57,7 +57,6 @@ class CareBotController:
                         "assistance has been sent to your caregiver."
 
         self.display_message(response_text, False)
-        self.get_model().process_and_play_response(response_text)
 
         # Summarising conversation and sending MMS to resident
         summarized_conversation = self.get_model(
@@ -68,6 +67,7 @@ class CareBotController:
                   summarized_conversation + "\n"
 
         self.display_message(summary, False)
+        self.get_model().process_and_play_response(response_text)
         self.get_model().send_mms(summarized_conversation)
 
     def handle_urgent_assistance(self, input_text: str):
@@ -201,7 +201,7 @@ class CareBotController:
         self.display_message(message, False)
         self.get_model().process_and_play_response(message)
 
-        if self.get_view().is_ui:
+        if self.get_view().get_is_ui():
             # Restart streamlit
             self.get_view().clear_streamlit()
         else:
