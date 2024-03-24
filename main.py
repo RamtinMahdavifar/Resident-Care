@@ -1,6 +1,3 @@
-import textwrap
-import os
-import sys
 import traceback
 
 from Model.model import CareBotModel
