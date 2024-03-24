@@ -22,6 +22,7 @@ def synthesize_speech(text: str, output_directory: str = "output",
     str: The path to the synthesized audio file.
     """
 
+    # do not output the tts logging to stdOut
     with suppress_stdout():
         # Create the output directory if it doesn't exist
         os.makedirs(output_directory, exist_ok=True)
