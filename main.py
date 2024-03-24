@@ -16,7 +16,7 @@ def main() -> None:
 
     try:
         while True:
-            input_text = controller.listen_for_keywords()
+            input_text = controller.get_voice_input(is_listen_keywords=True)
 
             if controller.handle_urgent_assistance(input_text):
                 continue

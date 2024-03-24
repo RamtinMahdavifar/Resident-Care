@@ -59,10 +59,31 @@ class CareBotController:
         else:
             return False
 
-    def handle_conversation(self, input_text):
+    def handle_conversation(self, input_text: str):
         """
         Manages the conversation flow, including generating responses and
         checking for assistance needs or intent to end the conversation.
+
+        Logic:
+            - Initialize a threshold for no replies and a count for
+              consecutive no replies.
+            - Loop infinitely to manage the conversation flow.
+                - Display the user's input.
+                - Generate a response based on the input and the conversation
+                  history.
+                - Display the generated response.
+                - Process and play the generated response.
+                - Transcribe audio to get the next input text.
+                - If the input text is empty or None, increase the count of no
+                  replies.
+                - If the count of no replies exceeds the threshold, say goodbye
+                  and exit the loop.
+                - If the input text indicates the intent to end the
+                  conversation or urgent assistance is needed:
+                    - Display the input text.
+                    - If the intent is to end the conversation, say goodbye.
+                    - If urgent assistance is needed, send an alert and exit
+                      the loop.
         """
         NO_REPLY_THRESH_HOLD = 2
         no_replies_count = 0
@@ -76,8 +97,7 @@ class CareBotController:
             self.display_message(response_text, False)
             self.get_model().process_and_play_response(response_text)
 
-            self.get_model().beep(800, 200)
-            input_text = self.get_model().transcribe_audio()
+            input_text = self.get_voice_input()
 
             if len(input_text) == 0 or input_text is None:
                 no_replies_count += 1
@@ -120,12 +140,6 @@ class CareBotController:
         self.display_message(message_ready, False)
 
         self.get_model().process_and_play_response(message_ready)
-        self.get_model().beep(800, 200)
-
-    def listen_for_keywords(self):
-        self.clear_conversation_history()
-        self.alert_ready()
-        return self.get_model().listen_for_keywords()
 
     def clear_conversation_history(self):
         self.get_conversation_history().clear()
@@ -156,3 +170,12 @@ class CareBotController:
             print(f"\nCareBot AI Response:\n{message_text}\n")
 
         self.get_view().display_streamlit_message(message_text, is_user)
+
+    def get_voice_input(self, is_listen_keywords=False):
+        self.get_model().beep(800, 200)
+        if is_listen_keywords:
+            self.clear_conversation_history()
+            self.alert_ready()
+            return self.get_model().listen_for_keywords()
+        else:
+            return self.get_model().transcribe_audio()
