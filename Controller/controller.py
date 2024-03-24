@@ -202,7 +202,7 @@ class CareBotController:
         self.get_model().process_and_play_response(message)
 
         if self.get_view().is_ui:
-            # restart streamlit
+            # Restart streamlit
             self.get_view().clear_streamlit()
         else:
             # Restart the script when not running in Streamlit UI mode

@@ -10,7 +10,7 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 
 g_delimiter = "####"
 
-# Resident details fetching should be corrected as follows:
+# Resident details
 GLOBAL_RESIDENT_FIRST_NAME: Optional[str] = os.getenv('RESIDENT_FIRST_NAME')
 GLOBAL_RESIDENT_LAST_NAME: Optional[str] = os.getenv('RESIDENT_LAST_NAME')
 GLOBAL_RESIDENT_AGE_YEARS: Optional[str] = os.getenv('RESIDENT_AGE_YEARS')
@@ -44,7 +44,7 @@ if GLOBAL_RESIDENT_SEX is None or GLOBAL_RESIDENT_SEX.lower() not in \
     print("Error: Resident sex must be either 'Male' or 'Female'.")
     sys.exit(1)
 
-# If all validations pass, you can continue with your program logic
+
 print("All Resident input data is valid.")
 
 if GLOBAL_CAREGIVER_DESCRIPTION is None:
