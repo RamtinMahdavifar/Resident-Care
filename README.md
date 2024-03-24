@@ -95,11 +95,11 @@ RESIDENT_MEDICAL_CONDITIONS='mild dementia, mobility issues.'
 # CareGiver Details
 Ensure that this is not empty.
 
-CAREGIVER_DESCRIPTION='The role of the Caregiver'
+CAREGIVERS_DESCRIPTION='The role of the Caregiver'
 
 For example:
 
-CAREGIVER_DESCRIPTION='Is a nurse in charge of taking care of the patient.'
+CAREGIVERS_DESCRIPTION='Is a nurse in charge of taking care of the patient.'
 
 ```
 
