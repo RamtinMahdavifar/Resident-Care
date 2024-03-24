@@ -1,3 +1,4 @@
+# Model/model.py
 __name__ = "Model.model"
 
 from Model.chatgpt_prompts import generate_response, \
