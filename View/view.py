@@ -1,12 +1,20 @@
 import textwrap
 import streamlit as st
 
-
 class CareBotView:
 
     def __init__(self):
-        self.is_ui = self.is_streamlit()
+        self.__is_ui = self.is_streamlit()
         self.initialize_ui()
+
+    def get_is_ui(self) -> bool:
+        """
+        Returns the self.__is_ui variable of the view
+
+        Returns:
+            bool: The self.__is_ui variable.
+        """
+        return self.__is_ui
 
     @staticmethod
     def render_sidebar(logo_path: str) -> None:
@@ -68,7 +76,7 @@ class CareBotView:
         and each message is stored as a placeholder in the Streamlit session
         state for potential later removal.
         """
-        if not self.is_ui:
+        if not self.get_is_ui():
             return
 
         color = "blue" if is_user else "#ADD8E6"
@@ -96,7 +104,7 @@ class CareBotView:
         """
         Use Streamlit rerun to refresh the app.
         """
-        if not self.is_ui:
+        if not self.get_is_ui():
             return
 
         st.rerun()
@@ -106,7 +114,7 @@ class CareBotView:
         Clears all messages displayed by the display_streamlit_message
         function.
         """
-        if not self.is_ui:
+        if not self.get_is_ui():
             return
 
         while st.session_state['message_placeholders']:
@@ -138,7 +146,7 @@ class CareBotView:
         """
         Initializes the UI components if the UI mode is enabled.
         """
-        if self.is_ui:
+        if self.get_is_ui():
             logo = "Images/logo.jpg"
             self.render_sidebar(logo)
             st.title("🤖 Care-Bot AI")
