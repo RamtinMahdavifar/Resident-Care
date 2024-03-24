@@ -60,7 +60,7 @@ def generate_response(
         is_save_conversation_history: bool = True
 ) -> str:
     """
-    Generate a response to the input text using OpenAI's GPT Model and
+    Generate a response to the input text using OpenAI's GPT Models and
     optionally append the interaction to the conversation history.
 
     Parameters:

@@ -1,8 +1,8 @@
 import openai
 import pytest
 
-from Model.chatgpt_prompts import generate_response
-from Model.sms_twilio import send_mms
+from Models.chatgpt_prompts import generate_response
+from Models.sms_twilio import send_mms
 
 
 @pytest.mark.smoke
@@ -20,11 +20,11 @@ def test_openai_version():
 
 def test_gpt_response():
     """
-    Tests the GPT Model's response generation to ensure it is not empty.
+    Tests the GPT Models's response generation to ensure it is not empty.
 
     This test calls the generate_response function with a sample input ("Hi
     ChatGPT") and checks that the response generated is not empty. It
-    verifies that the GPT Model is correctly set up and capable of producing
+    verifies that the GPT Models is correctly set up and capable of producing
     responses, ensuring the chat functionality is operational.
     """
     assert len(generate_response("Hi ChatGPT", [])) != 0

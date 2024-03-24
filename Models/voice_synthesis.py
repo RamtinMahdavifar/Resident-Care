@@ -2,7 +2,7 @@ import os
 import pygame
 from TTS.api import TTS
 
-from Model.utilities import remove_temp_files, suppress_stdout
+from Models.utilities import remove_temp_files, suppress_stdout
 
 tts_model_name = os.getenv('TTS_MODEL_NAME')
 tts = TTS(model_name=tts_model_name)
@@ -28,7 +28,7 @@ def synthesize_speech(text: str, output_directory: str = "output",
 
         output_file_path = os.path.join(output_directory, filename)
 
-        # Use the TTS Model to synthesize the text into an audio file
+        # Use the TTS Models to synthesize the text into an audio file
         tts.tts_to_file(text=text, file_path=output_file_path)
 
         return output_file_path

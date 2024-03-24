@@ -2,7 +2,7 @@ import os
 import sys
 from typing import List, Dict
 
-from Model.model import CareBotModel
+from Models.model import CareBotModel
 from View.view import CareBotView
 
 

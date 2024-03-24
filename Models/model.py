@@ -1,14 +1,11 @@
-# Model/model.py
-__name__ = "Model.model"
-
-from Model.chatgpt_prompts import generate_response, \
+from Models.chatgpt_prompts import generate_response, \
     summarize_conversation_history, \
     is_urgent_assistance_needed, is_intent_to_end_conversation
 
-from Model.sms_twilio import send_mms
-from Model.voice_recognition import transcribe_audio, listen_for_keywords
-from Model.utilities import beep
-from Model.voice_synthesis import process_and_play_response
+from Models.sms_twilio import send_mms
+from Models.voice_recognition import transcribe_audio, listen_for_keywords
+from Models.utilities import beep
+from Models.voice_synthesis import process_and_play_response
 
 
 class CareBotModel:

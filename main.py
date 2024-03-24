@@ -1,6 +1,6 @@
 import traceback
 
-from Model.model import CareBotModel
+from Models.model import CareBotModel
 from View.view import CareBotView
 from Controller.controller import CareBotController
 
@@ -9,13 +9,14 @@ def main() -> None:
     """
     Main function to run program.
     """
-    model = CareBotModel()
-    view = CareBotView()
-    controller = CareBotController(model, view)
+    model: CareBotModel = CareBotModel()
+    view: CareBotView = CareBotView()
+    controller: CareBotController = CareBotController(model, view)
 
     try:
         while True:
-            input_text = controller.get_voice_input(is_listen_keywords=True)
+            input_text: str = controller.get_voice_input(
+                is_listen_keywords=True)
 
             if controller.handle_urgent_assistance(input_text):
                 continue

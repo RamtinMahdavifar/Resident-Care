@@ -1,6 +1,6 @@
 import pytest
 
-from Model.keyword_recognition import has_keyword
+from Models.keyword_recognition import has_keyword
 
 keywords = [
     "Help", "Emergency", "Fall", "Hurt", "Medication", "Doctor", "Nurse",
