@@ -1,3 +1,5 @@
+__name__ = "Model.model"
+
 from Model.chatgpt_prompts import generate_response, \
     summarize_conversation_history, \
     is_urgent_assistance_needed, is_intent_to_end_conversation
