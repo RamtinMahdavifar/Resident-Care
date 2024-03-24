@@ -64,6 +64,9 @@ class CareBotController:
         Manages the conversation flow, including generating responses and
         checking for assistance needs or intent to end the conversation.
         """
+        NO_REPLY_THRESH_HOLD = 2
+        no_replies_count = 0
+
         while True:
             self.display_message(input_text)
 
@@ -76,10 +79,17 @@ class CareBotController:
             self.get_model().beep(800, 200)
             input_text = self.get_model().transcribe_audio()
 
+            if len(input_text) == 0 or input_text is None:
+                no_replies_count += 1
+
+            if no_replies_count >= NO_REPLY_THRESH_HOLD:
+                self.say_goodbye()
+                break
+
             if self.get_model().is_intent_to_end_conversation(
                     input_text) or \
                     self.get_model().is_urgent_assistance_needed(
-                    input_text):
+                        input_text):
 
                 self.display_message(input_text)
 
