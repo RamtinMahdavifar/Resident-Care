@@ -77,8 +77,28 @@ class CareBotController:
              true if urgent assistance case was handled.
         """
         if self.get_model().is_urgent_assistance_needed(input_text):
+            self.get_model()\
+                .append_conversation_history(
+                input_text, "", self.get_conversation_history())
             self.display_message(input_text)
             self.alert_assistance_request_sent()
+            return True
+        else:
+            return False
+
+    def handle_intent_to_end_conversation(self, input_text: str):
+        """
+        Handles the scenario when the Resident displays the intent to end the
+        current conversation.
+        Returns:
+             true if urgent assistance case was handled.
+        """
+        if self.get_model().is_intent_to_end_conversation(input_text):
+            self.get_model()\
+                .append_conversation_history(
+                input_text, "", self.get_conversation_history())
+            self.display_message(input_text)
+            self.say_goodbye()
             return True
         else:
             return False
@@ -130,17 +150,8 @@ class CareBotController:
                 self.say_goodbye()
                 break
 
-            if self.get_model().is_intent_to_end_conversation(
-                    input_text) or \
-                    self.get_model().is_urgent_assistance_needed(
-                        input_text):
-
-                self.display_message(input_text)
-
-                if self.get_model().is_intent_to_end_conversation(input_text):
-                    self.say_goodbye()
-                else:
-                    self.alert_assistance_request_sent()
+            if self.handle_intent_to_end_conversation(input_text) or \
+                    self.handle_urgent_assistance(input_text):
                 break
 
     def say_goodbye(self) -> None:

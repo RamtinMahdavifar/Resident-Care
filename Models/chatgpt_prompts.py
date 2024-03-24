@@ -54,6 +54,39 @@ if GLOBAL_CAREGIVERS_DESCRIPTION is None:
 print("CAREGIVER_DESCRIPTION is valid.")
 
 
+def append_conversation_history(
+        input_text: str,
+        response_text: str,
+        conversation_history: List[Dict[str, str]]
+) -> None:
+    """
+    Append the user's input and the assistant's response to the conversation
+    history if they are not empty.
+
+    This function modifies the conversation history in place by adding
+    two new entries: one for the user's input and one for the
+    assistant's response. The entries are only added if they are not empty.
+
+    Parameters:
+        - input_text (str): The user's input text.
+        - response_text (str): The assistant's generated response text.
+        - conversation_history (list): The history of the conversation to which
+          the new interaction will be appended. Each item in the list is a
+          dict with 'role' (either 'user' or 'assistant') and 'content' keys.
+
+    Returns:
+        - None
+    """
+    if len(input_text) != 0:
+        conversation_history.append({"role": "user", "content": input_text})
+
+    if len(response_text) != 0:
+        conversation_history.append({
+            "role": "assistant",
+            "content": response_text
+        })
+
+
 def generate_response(
         input_text: str,
         conversation_history: List[Dict[str, str]],
@@ -382,7 +415,6 @@ def summarize_conversation_history(conversation_history: List[Dict[str, str]]
     Returns:
         -str: The generated response text.
     """
-
     prompt = f"""
              Your task is to summarize the relevant assistance needs of the
              Resident based on the conversation_history.
