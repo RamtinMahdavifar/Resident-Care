@@ -48,7 +48,7 @@ def test_is_urgent_assistance_needed_true():
     # assert (is_urgent_assistance_needed(
     #     "I'm feeling lost and I don't know where I am")) is True
     # assert (is_urgent_assistance_needed(
-    #     "I help getting dressed, my clothes are "
+    #     "I need help getting dressed, my clothes are "
     #     "confusing me")) is True
     # assert (is_urgent_assistance_needed(
     #     "I can't remember if I've taken my medication today or not")) is True
