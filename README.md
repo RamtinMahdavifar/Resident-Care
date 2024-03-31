@@ -15,6 +15,8 @@ Access the project files and documentation through this [Google Drive link](http
 ## Software Requirements
 1. Python 3.9.x (We have tested on Python 3.9.18)
 2. Debian Linux (We have tested on Ubuntu 22.0.4 Operating System)
+3. A Paid Tier 1 Open AI api key is required to run this Project. 
+   
 
 ## Setup Instructions
 
