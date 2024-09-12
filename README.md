@@ -1,4 +1,9 @@
-# Resident-Care
+# CareBot Ai
+
+## Description
+### CareBot is a virtual assistant designed for the context of a nursing home or hospital ward.
+CareBot has capabilities of detecting a Resident’s need for assistance or a Residence need for Empathy (Psychological Support, Emotional Support, Crisis Intervention)
+
 
 ## Project Files
 
